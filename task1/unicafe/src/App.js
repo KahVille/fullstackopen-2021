@@ -1,5 +1,13 @@
 import { useState } from "react";
 
+
+const FeedbackStatisticLine = ({text, feedbackValue}) => {
+  return (
+    <p>{text}: {feedbackValue}</p>
+  );
+}
+
+
 const FeedbackButton = (props) => {
   return (
   <button onClick={props.handleFeedback}>{props.text}</button>
@@ -13,18 +21,18 @@ const Statistics = ({good, neutral, bad}) => {
     <h2>Statistics</h2>
     <div className="feedback-statistics">
       <h3>Feedback count</h3>
-      <p> Good: {good}</p>
-      <p> Neutral: {neutral}</p>
-      <p> Bad: {bad}</p>
-      <p> All: {good + neutral + bad}</p>
+      <FeedbackStatisticLine text="Good" feedbackValue={good} />
+      <FeedbackStatisticLine text="Neutral" feedbackValue={neutral} />
+      <FeedbackStatisticLine text="Bad" feedbackValue={bad} />
+      <FeedbackStatisticLine text="All" feedbackValue={good + neutral + bad} />
       <h3> Feedback average</h3>
       {/* As note! I'm not certain what task instructions mean by this weighted average. Would be needed to be reseacrhed more
           As I intercepted this weighted task was about how to use variables and math operations in jsx files not so much as of the task in hand.
           As such to see the reactivity of the feedback buttons corresponding to the statistics
           But to continue this excercise I left these averages as a placeholder. Would be needed to fix if shipped to production.
       */}
-      <p> Weighted Average: {((good * 1) + (neutral * 0) + (bad * -1) / (good + neutral + bad) )}</p>
-      <p> Positive Average: {(good / (good + neutral + bad) * 100 )} %</p>
+      <FeedbackStatisticLine text="Weighted Average" feedbackValue={((good * 1) + (neutral * 0) + (bad * -1) / (good + neutral + bad) )} />
+      <FeedbackStatisticLine text=" Positive Average" feedbackValue={ (good / (good + neutral + bad) * 100 ) + ' %'} />
     </div>
   </section>
 

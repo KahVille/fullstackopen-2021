@@ -1,5 +1,12 @@
 import { useState } from "react";
 
+const FeedbackButton = (props) => {
+  return (
+  <button onClick={props.handleFeedback}>{props.text}</button>
+  );
+
+}
+
 const Statistics = ({good, neutral, bad}) => {
   return (
     <section className="user-feedback-statistics">
@@ -28,8 +35,19 @@ const App = () => {
 
   //Feedback count
   const [good, setGood] = useState(0);
+  const setGoodValue = (newValue) => {
+    setGood(newValue)
+  }
+
   const [neutral, setNeutral] = useState(0);
+  const setNeutralValue = (newValue) => {
+    setNeutral(newValue)
+  }
+
   const [bad, setBad] = useState(0);
+  const setBadValue = (newValue) => {
+    setBad(newValue)
+  }
 
   return (
     <div className="App">
@@ -44,14 +62,14 @@ const App = () => {
             Provide feedback on overall experience
           </h2>
           <div className="feedback-buttons">
-            <button onClick= {() => setGood(good+1)}>Good</button>
-            <button onClick= {() => setNeutral(neutral+1)}>Neutral</button>
-            <button onClick= {() => setBad(bad+1)}>Bad</button>
+            <FeedbackButton handleFeedback={() => setGoodValue(good+1)} text="Good"/>
+            <FeedbackButton handleFeedback={() => setNeutralValue(neutral+1)} text="Neutral"/>
+            <FeedbackButton handleFeedback={() => setBadValue(bad+1)} text="Bad"/>
           </div>
         </section>
 
         {(good > 0 || neutral > 0 || bad > 0) ? <Statistics good={good} neutral={neutral} bad={bad}></Statistics> : 'No user feedback'}
-              
+
       </main>
 
     </div>

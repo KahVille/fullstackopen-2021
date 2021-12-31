@@ -32,9 +32,8 @@ const App = () => {
     },   
   ]
 
-
-   
-  const [selected, setSelected] = useState(0)
+  const [appAnecdotes, setappAnecdotes] = useState(anecdotes);
+  const [selected, setSelected] = useState(0);
 
   const showNextAnecdote = () => {
     let nextIndex = selected;
@@ -60,18 +59,50 @@ const App = () => {
     setSelected(randomAnecdoteNumber);
   }
 
+  const voteAnecdote = () => {
+    let copy = [...appAnecdotes]
+    copy[selected].voteCount += 1     
+    setappAnecdotes(copy);
+    mostVotedAnecdote();
+  }
+
+  const mostVotedAnecdote = () => {
+
+    let copy = [...appAnecdotes];
+    copy.sort((firstItem, secondItem) => firstItem.voteCount - secondItem.voteCount).reverse();
+    let mostVotedAnecDote = copy[0];
+
+    return mostVotedAnecDote;
+  }
+
+
+
   return (
     <div>
         <div>
-          {anecdotes[selected].text}
+          {appAnecdotes[selected].text}
         </div>
         <div>
-        {'has ' + anecdotes[selected].voteCount + ' votes'}
+        {'has ' + appAnecdotes[selected].voteCount + ' votes'}
         </div>
         <div>
           <button onClick={() => showNextAnecdote()}>Show next anecdote</button>
           <button onClick={() => showRandomAnecdote()}>Show random anecdote</button>
+          <button onClick={() => voteAnecdote()}>Vote</button>
         </div>
+
+      <div>
+        {'Most voted Anecdote'}
+      
+      <div>
+      {mostVotedAnecdote().text}
+      </div>
+      <div>
+      { 'Votes ' +mostVotedAnecdote().voteCount}
+      </div>
+
+      </div>
+
     
     </div>
   )

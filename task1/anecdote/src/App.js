@@ -13,9 +13,28 @@ const App = () => {
    
   const [selected, setSelected] = useState(0)
 
+  const showNextAnecdote = () => {
+    let nextIndex = selected;
+    console.log(nextIndex);
+
+    if(selected < anecdotes.length -1)
+    {
+      nextIndex = selected + 1;
+    }
+    else
+      nextIndex = 0;
+    setSelected(nextIndex);
+  }
+
   return (
     <div>
-      {anecdotes[selected]}
+        <div>
+          {anecdotes[selected]}
+        </div>
+        <div>
+          <button onClick={() => showNextAnecdote()}>Show next anecdote</button>
+        </div>
+    
     </div>
   )
 }

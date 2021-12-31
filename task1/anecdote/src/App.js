@@ -15,7 +15,6 @@ const App = () => {
 
   const showNextAnecdote = () => {
     let nextIndex = selected;
-    console.log(nextIndex);
 
     if(selected < anecdotes.length -1)
     {
@@ -26,6 +25,18 @@ const App = () => {
     setSelected(nextIndex);
   }
 
+  const getRandomIntInclusive = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+  }
+
+  const showRandomAnecdote = () => {
+    let maxLength = anecdotes.length -1;
+    let randomAnecdoteNumber = getRandomIntInclusive(0, maxLength);
+    setSelected(randomAnecdoteNumber);
+  }
+
   return (
     <div>
         <div>
@@ -33,6 +44,7 @@ const App = () => {
         </div>
         <div>
           <button onClick={() => showNextAnecdote()}>Show next anecdote</button>
+          <button onClick={() => showRandomAnecdote()}>Show random anecdote</button>
         </div>
     
     </div>

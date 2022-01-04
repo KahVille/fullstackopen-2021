@@ -1,0 +1,3 @@
+# Yarn attributes
+/.yarn/releases/** binary
+/.yarn/plugins/** binary

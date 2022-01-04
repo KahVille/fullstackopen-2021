@@ -1,4 +1,5 @@
 import { useState } from "react"
+import ContactForm from "./components/ContactForm"
 import ContactList from "./components/ContactList"
 import Filter from "./components/Filter"
 
@@ -33,7 +34,6 @@ const App = () => {
     setPersons([...persons,newContact]);
     setNewName('');
     setNewNumber('');
-
   }
 
   const handleContactNameChange = (event) => {
@@ -74,25 +74,18 @@ const App = () => {
       <h2>Phonebook</h2>
 
       <h2>Add a new contact</h2>
-      <form onSubmit={(event) => handleContactAdd(event)}>
-        <div>
-          name: <input
-           value={newName}
-           onChange={(event) => handleContactNameChange(event)}
-          />
-        </div>
-        <div>
-          number: <input
-           value={newNumber}
-           onChange={(event) => handleContactNumberChange(event)}
-          />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <ContactForm newName={newName} newNumber={newNumber} 
+      handleContactAdd={(event) => handleContactAdd(event)} 
+      handleContactNameChange={(event) => handleContactNameChange(event)}
+      handleContactNumberChange={(event) => handleContactNumberChange(event)}
+      />
+
       <h2>Numbers</h2>
-      <Filter filterNameValue={filterNameValue} handleContactFilterChange= {(event) => handleContactFilterChange(event)} ></Filter>
+      <Filter
+      filterNameValue={filterNameValue}
+      handleContactFilterChange= {(event) => handleContactFilterChange(event)} 
+      />
+
       <ContactList persons={filteredPersons()} />
     </div>
   )

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import ContactList from "./components/ContactList"
 import Filter from "./components/Filter"
 
 // Conntacts App
@@ -92,11 +93,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <Filter filterNameValue={filterNameValue} handleContactFilterChange= {(event) => handleContactFilterChange(event)} ></Filter>
-      <div>
-      {filteredPersons().map((person) => {
-        return <p key={person.name + person.number}>{person.name} {person.number}</p>
-      })}
-      </div>
+      <ContactList persons={filteredPersons()} />
     </div>
   )
 

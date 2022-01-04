@@ -1,0 +1,10 @@
+// Contact list
+const ContactList = ({persons}) => {
+    return <div>
+        {persons.map((person) => {
+            return <p key={person.name + person.number}>{person.name} {person.number}</p>
+        })}
+    </div>
+}
+
+export default ContactList;

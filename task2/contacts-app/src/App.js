@@ -1,4 +1,5 @@
 import { useState } from "react"
+import Filter from "./components/Filter"
 
 // Conntacts App
 const App = () => {
@@ -90,14 +91,8 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
+      <Filter filterNameValue={filterNameValue} handleContactFilterChange= {(event) => handleContactFilterChange(event)} ></Filter>
       <div>
-          filter contacts by name: <input
-           value={filterNameValue}
-           onChange={(event) => handleContactFilterChange(event)}
-          />
-        </div>
-      <div>
-
       {filteredPersons().map((person) => {
         return <p key={person.name + person.number}>{person.name} {person.number}</p>
       })}

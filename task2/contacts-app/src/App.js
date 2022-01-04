@@ -58,7 +58,7 @@ const App = () => {
     return isContactValid(persons, newContact);
   }
 
-  const filteredPersons = () => {
+  const filteredPersons = (persons) => {
     const personList = [...persons];
     const filteredList = personList.filter((person) => person.name.toLowerCase() === filterNameValue.toLowerCase());
 
@@ -86,7 +86,7 @@ const App = () => {
       handleContactFilterChange= {(event) => handleContactFilterChange(event)} 
       />
 
-      <ContactList persons={filteredPersons()} />
+      <ContactList persons={filteredPersons(persons)} />
     </div>
   )
 

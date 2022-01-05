@@ -35,6 +35,18 @@ const App = () => {
     setFilterCountryValue(event.target.value)
   }
 
+  const filteredCountries = (countries) => {
+
+    const countriesToFilter = [...countries];
+
+    const countriesMatched = countriesToFilter.filter((country) => country.name.common.toLowerCase().includes(filterCountryValue.toLowerCase()));
+
+    if(!countriesMatched && countriesMatched.length <= 0)
+      return countriesToFilter;
+
+    return countriesMatched;
+  }
+
   return (
     <div className="App">
       <h1>Countries Information</h1>
@@ -46,7 +58,7 @@ const App = () => {
           onChange={(event) => onFilterValueChange(event)} /></label>
       </div>
 
-      <CountryList countries={countries} />
+      <CountryList countries={filteredCountries(countries)} />
     </div>
   );
 }

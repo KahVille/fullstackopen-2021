@@ -1,3 +1,5 @@
+import Country from "./Country"
+
 // Countries
 const CountryList = ({countries, totalNumberOfCountries}) => {
 
@@ -15,7 +17,7 @@ const CountryList = ({countries, totalNumberOfCountries}) => {
 
     if(countries.length === 1) {
       const [country] = countries;
-      return <p>{country.name.common}</p>
+      return <Country country={country}></Country>
     }
 
     return countries.map((country) => {

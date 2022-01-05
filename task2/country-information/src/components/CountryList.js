@@ -1,14 +1,33 @@
 // Countries
 const CountryList = ({countries, totalNumberOfCountries}) => {
-    
+
+  const CountriesAfterValidation = (countries) => {
+
+    if(!countries)
+      return <p>No Countries found</p>
+
+      if(countries.length <= 0)
+      return <p>No Countries found</p>
+
+
+    if(countries.length > 10)
+      return <p>Too many countries found. Please, specify your search filter</p>
+
+    if(countries.length === 1) {
+      const [country] = countries;
+      return <p>{country.name.common}</p>
+    }
+
+    return countries.map((country) => {
+      return <p key={country.cca3+country.ccn3}>{country.name.common}</p>
+  })
+  }
+
+  
     return <div>
     <p>Search found total of {countries.length} out of {totalNumberOfCountries} countries</p>
-    { 
-     countries && countries.length -1 < 10 ?
-     countries.map((country) => {
-        return <p key={country.cca3+country.ccn3}>{country.name.common}</p>
-    })
-    : <p>Too many countries, please specify more filter options</p>
+    {
+      CountriesAfterValidation(countries)
     }
   </div>
 }

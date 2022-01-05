@@ -52,13 +52,13 @@ const App = () => {
       <h1>Countries Information</h1>
 
       <div>
-        <label>Find countries 
+        <label>Find countries: 
           <input placeholder="search for countries" 
           value={filterCountryValue}
           onChange={(event) => onFilterValueChange(event)} /></label>
       </div>
 
-      <CountryList countries={filteredCountries(countries)} />
+      <CountryList countries={filteredCountries(countries)} totalNumberOfCountries={countries.length} />
     </div>
   );
 }

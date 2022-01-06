@@ -1,5 +1,8 @@
 // Country details
 const Country = ({country}) => {
+
+    if(!country)
+        return <div></div>
     
     const name = country.name.common;
     const [capital] = country.capital;

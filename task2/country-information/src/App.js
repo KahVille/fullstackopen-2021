@@ -1,14 +1,26 @@
 import { useEffect, useState } from "react";
 import CountryList from "./components/CountryList";
-
+import Country from "./components/Country";
 // Country Information app
+
+const DisplayedCountries = ({displayCountry, countries, countryDetails, onShowCountryDetails}) => {
+    return (
+      <>
+      {
+        displayCountry ? <Country country={countryDetails}/> : <CountryList countries={countries} onShowCountryDetails={(country) => onShowCountryDetails(country)} />
+      }
+      </>
+    )
+}
+
 const App = () => {
 
   const [countries, setCountries] = useState([]);
+  const [displayCountry, setDisplayCountry] = useState(false);
+  const [countryDetails, setCountryDetails] = useState(countries[0]);
 
   useEffect(() => {
     const getCountriesHandler = countries => {
-      console.log(countries);
       setCountries(countries)
     }
 
@@ -32,6 +44,9 @@ const App = () => {
   const [filterCountryValue, setFilterCountryValue] = useState('');
 
   const  onFilterValueChange = (event) => {
+    if(displayCountry)
+      setDisplayCountry(false);
+
     setFilterCountryValue(event.target.value)
   }
 
@@ -47,6 +62,11 @@ const App = () => {
     return countriesMatched;
   }
 
+  const showCountryDetailView = (country) => {
+    setCountryDetails(country);
+    setDisplayCountry(true);
+  }
+
   return (
     <div className="App">
       <h1>Countries Information</h1>
@@ -58,7 +78,7 @@ const App = () => {
           onChange={(event) => onFilterValueChange(event)} /></label>
       </div>
 
-      <CountryList countries={filteredCountries(countries)} totalNumberOfCountries={countries.length} />
+      <DisplayedCountries displayCountry={displayCountry} countries={filteredCountries(countries)} countryDetails={countryDetails} onShowCountryDetails={(country) => showCountryDetailView(country)}/>
     </div>
   );
 }

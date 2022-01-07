@@ -33,7 +33,22 @@ const addNew = (newContact) => {
 
 };
 
-const update = () => {};
+const update = (updatedContactInfo) => {
+    const personsInit = {
+        method: 'PUT',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        body: JSON.stringify(updatedContactInfo), 
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+  
+      const promise = fetch(`${baseApiUrl}/${updatedContactInfo.id}`, personsInit)
+      return promise.then(response => {return response.json()});
+
+};
 
 const remove = (id) => {
     const personsInit = {

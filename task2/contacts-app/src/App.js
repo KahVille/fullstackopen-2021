@@ -20,6 +20,24 @@ const App = () => {
     contactsApi.getAll().then(data => HandlePersonDataChange(data));
   },[])
 
+  const handleUpdatedContactInformation = (data) => {
+    const personList = [...persons];
+    setPersons(personList.map(contact => contact.id !== data.id ? contact : data));
+  }
+
+  const updateContactInformation = (contactToUpdate) => {
+    const personList = [...persons];
+    const filteredList = personList.filter((person) => person.name.toLowerCase() === contactToUpdate.name.toLowerCase());
+    const [contact] = filteredList;
+    const updateInformation = {
+      id: contact.id,
+      name: contact.name,
+      number: contactToUpdate.number
+    };
+
+    contactsApi.update(updateInformation).then(data => handleUpdatedContactInformation(data));
+  }
+
 
   const handleNewContactAdded = (addedContact) => {
     setPersons([...persons,addedContact]);
@@ -37,8 +55,11 @@ const App = () => {
 
     if(!IsNewContactValid(persons,newContact))
     {
-      alert(`${newName} is already added to contacts`);
-      console.warn(`${newName} is already added to contacts`);
+      // debug: console.warn(`${newContact.name} is already added to contacts`);
+      const updateContact = window.confirm(`${newContact.name} is already added to contacts. Do you want to update ${newContact.name}`);
+      if(updateContact) {
+        updateContactInformation(newContact);
+      }
       return;
     }
 
@@ -67,7 +88,7 @@ const App = () => {
   }
 
   const isContactValid = (persons, newContact) => {
-    let personFound = persons.filter((person) => person.name === newContact.name && person.number === newContact.number);
+    let personFound = persons.filter((person) => person.name.toLowerCase() === newContact.name.toLowerCase());
     return personFound.length > 0 ? false : true;
   }
 

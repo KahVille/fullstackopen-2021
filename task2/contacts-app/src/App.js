@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import contactsApi from "./api/ContactsAppApi"
 import ContactForm from "./components/ContactForm"
 import ContactList from "./components/ContactList"
 import Filter from "./components/Filter"
@@ -16,21 +17,15 @@ const App = () => {
         setPersons(persons);
     };
 
-    const personsInit = {
-      method: 'GET',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
-
-    const promise = fetch('http://localhost:3001/persons', personsInit)
-    promise.then(response => response.json()).then(data => HandlePersonDataChange(data));
-
+    contactsApi.getAll().then(data => HandlePersonDataChange(data));
   },[])
 
+
+  const handleNewContactAdded = (addedContact) => {
+    setPersons([...persons,addedContact]);
+    setNewName('');
+    setNewNumber('');
+  }
 
   const handleContactAdd = (event) => {
     event.preventDefault();
@@ -47,9 +42,7 @@ const App = () => {
       return;
     }
 
-    setPersons([...persons,newContact]);
-    setNewName('');
-    setNewNumber('');
+    contactsApi.addNew(newContact).then(data => handleNewContactAdded(data));
   }
 
   const handleContactNameChange = (event) => {
@@ -68,7 +61,6 @@ const App = () => {
     let personFound = persons.filter((person) => person.name === newContact.name && person.number === newContact.number);
     return personFound.length > 0 ? false : true;
   }
-
 
   const IsNewContactValid = (persons, newContact) => {
     return isContactValid(persons, newContact);

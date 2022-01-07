@@ -17,7 +17,11 @@ const App = () => {
         setPersons(persons);
     };
 
-    contactsApi.getAll().then(data => HandlePersonDataChange(data));
+    contactsApi.getAll()
+    .then(data => HandlePersonDataChange(data))
+    .catch(error => {
+      console.error('Failed to fetch any contact information', error)
+    });
   },[])
 
   const handleUpdatedContactInformation = (data) => {
@@ -35,7 +39,11 @@ const App = () => {
       number: contactToUpdate.number
     };
 
-    contactsApi.update(updateInformation).then(data => handleUpdatedContactInformation(data));
+    contactsApi.update(updateInformation)
+    .then(data => handleUpdatedContactInformation(data))
+    .catch(error => {
+      console.error('Failed to update contact information', error)
+    });
   }
 
 
@@ -63,7 +71,11 @@ const App = () => {
       return;
     }
 
-    contactsApi.addNew(newContact).then(data => handleNewContactAdded(data));
+    contactsApi.addNew(newContact)
+    .then(data => handleNewContactAdded(data))
+    .catch(error => {
+      console.error('Failed to add new contact', error)
+    });
   }
 
   const handleRemovedContact = (id) => {
@@ -72,7 +84,11 @@ const App = () => {
   }
 
   const handleRemoveContact = (id) => {
-    contactsApi.remove(id).then(() => handleRemovedContact(id));
+    contactsApi.remove(id)
+    .then(() => handleRemovedContact(id))
+    .catch(error => {
+      console.error('Failed to remove contact', error)
+    });
   }
 
   const handleContactNameChange = (event) => {

@@ -35,7 +35,21 @@ const addNew = (newContact) => {
 
 const update = () => {};
 
-const remove = () => {};
+const remove = (id) => {
+    const personsInit = {
+        method: 'DELETE',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+  
+      const promise = fetch(`${baseApiUrl}/${id}`, personsInit)
+      return promise.then(response => {return response.json()});
+
+};
 
 const contactsApi = { getAll, addNew, update, remove }
 export default contactsApi;

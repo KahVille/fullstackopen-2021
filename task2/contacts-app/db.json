@@ -21,18 +21,13 @@
       "id": 4
     },
     {
-      "name": "testi",
-      "number": "040-234",
-      "id": 5
-    },
-    {
-      "name": "testi a",
-      "number": "402-32",
+      "name": "Testi B",
+      "number": "3242",
       "id": 6
     },
     {
-      "name": "testi b",
-      "number": "402-4231",
+      "name": "Testi C",
+      "number": "3242",
       "id": 7
     }
   ]

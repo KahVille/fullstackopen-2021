@@ -45,6 +45,15 @@ const App = () => {
     contactsApi.addNew(newContact).then(data => handleNewContactAdded(data));
   }
 
+  const handleRemovedContact = (id) => {
+    const updatedContactListAfterRemove = persons.filter(person => person.id !== id);
+    setPersons(updatedContactListAfterRemove);
+  }
+
+  const handleRemoveContact = (id) => {
+    contactsApi.remove(id).then(() => handleRemovedContact(id));
+  }
+
   const handleContactNameChange = (event) => {
   setNewName(event.target.value)
   }
@@ -94,7 +103,7 @@ const App = () => {
       handleContactFilterChange= {(event) => handleContactFilterChange(event)} 
       />
 
-      <ContactList persons={filteredPersons(persons)} />
+      <ContactList persons={filteredPersons(persons)} onRemoveContact={(id) => handleRemoveContact(id)} />
     </div>
   )
 

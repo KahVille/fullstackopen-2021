@@ -1,8 +1,13 @@
 // Contact list
-const ContactList = ({persons}) => {
+const ContactList = ({persons, onRemoveContact}) => {
     return <div>
         {persons.map((person) => {
-            return <p key={person.name + person.number}>{person.name} {person.number}</p>
+            return (
+                <div key={person.id}>
+                <p>{person.name} {person.number}</p>
+                <button onClick={() => onRemoveContact(person.id)}>Remove</button>
+                </div>
+            )           
         })}
     </div>
 }

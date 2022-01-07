@@ -3,6 +3,8 @@ import contactsApi from "./api/ContactsAppApi"
 import ContactForm from "./components/ContactForm"
 import ContactList from "./components/ContactList"
 import Filter from "./components/Filter"
+import Notification from "./components/Notification"
+import "./App.css"
 
 // Conntacts App
 const App = () => {
@@ -10,6 +12,20 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterNameValue, setFilterNameValue] = useState('')
+
+  const [notificationMessage, setNotificationMessage] = useState({message: '', classname: ''});
+
+  const setErrorMessage = (message) => {
+    console.error(message);
+    const errorMessage = {message: message, classname: 'error-message'}
+    setNotificationMessage(errorMessage)
+  }
+
+  const setSuccessMessage = (message) => {
+    console.log(message);
+    const successMessage = {message: message, classname: 'success-message'}
+    setNotificationMessage(successMessage)
+  }
 
   useEffect(() => {
 
@@ -20,13 +36,14 @@ const App = () => {
     contactsApi.getAll()
     .then(data => HandlePersonDataChange(data))
     .catch(error => {
-      console.error('Failed to fetch any contact information', error)
+      setErrorMessage(error.message + ', unable to get any contacts from the server ')
     });
   },[])
 
   const handleUpdatedContactInformation = (data) => {
     const personList = [...persons];
     setPersons(personList.map(contact => contact.id !== data.id ? contact : data));
+    setSuccessMessage('Updated contact information successfully');
   }
 
   const updateContactInformation = (contactToUpdate) => {
@@ -42,7 +59,7 @@ const App = () => {
     contactsApi.update(updateInformation)
     .then(data => handleUpdatedContactInformation(data))
     .catch(error => {
-      console.error('Failed to update contact information', error)
+      setErrorMessage(error.message);
     });
   }
 
@@ -51,6 +68,7 @@ const App = () => {
     setPersons([...persons,addedContact]);
     setNewName('');
     setNewNumber('');
+    setSuccessMessage('Added new contact successfully')
   }
 
   const handleContactAdd = (event) => {
@@ -63,7 +81,6 @@ const App = () => {
 
     if(!IsNewContactValid(persons,newContact))
     {
-      // debug: console.warn(`${newContact.name} is already added to contacts`);
       const updateContact = window.confirm(`${newContact.name} is already added to contacts. Do you want to update ${newContact.name}`);
       if(updateContact) {
         updateContactInformation(newContact);
@@ -74,20 +91,21 @@ const App = () => {
     contactsApi.addNew(newContact)
     .then(data => handleNewContactAdded(data))
     .catch(error => {
-      console.error('Failed to add new contact', error)
+      setErrorMessage(error.message);
     });
   }
 
   const handleRemovedContact = (id) => {
     const updatedContactListAfterRemove = persons.filter(person => person.id !== id);
     setPersons(updatedContactListAfterRemove);
+    setSuccessMessage('Removed contact successfully');
   }
 
   const handleRemoveContact = (id) => {
     contactsApi.remove(id)
     .then(() => handleRemovedContact(id))
     .catch(error => {
-      console.error('Failed to remove contact', error)
+      setErrorMessage(error.message);
     });
   }
 
@@ -126,6 +144,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification message={notificationMessage.message} classname={notificationMessage.classname} />
 
       <h2>Add a new contact</h2>
       <ContactForm newName={newName} newNumber={newNumber} 

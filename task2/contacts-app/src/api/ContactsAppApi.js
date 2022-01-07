@@ -12,8 +12,11 @@ const getAll = () => {
       }
   
       const promise = fetch(baseApiUrl, personsInit)
-      return promise.then(response => {return response.json()});
-
+      return promise.then(response => {
+        if(response.ok)
+        return response.json();
+        else throw new Error('Failed to get contacts');
+      });
 };
 
 const addNew = (newContact) => {
@@ -29,8 +32,11 @@ const addNew = (newContact) => {
       }
   
       const promise = fetch(baseApiUrl, personsInit)
-      return promise.then(response => {return response.json()});
-
+      return promise.then(response => {
+        if(response.ok)
+        return response.json();
+        else throw new Error('Failed to add new contact');
+      });
 };
 
 const update = (updatedContactInfo) => {
@@ -46,8 +52,13 @@ const update = (updatedContactInfo) => {
       }
   
       const promise = fetch(`${baseApiUrl}/${updatedContactInfo.id}`, personsInit)
-      return promise.then(response => {return response.json()});
-
+      return promise.then(response => {
+        if(response.ok)
+        return response.json();
+        else if(response.status === 404)
+            throw new Error('Contact already removed');
+        else throw new Error('Failed to update contact');
+      });
 };
 
 const remove = (id) => {
@@ -60,9 +71,14 @@ const remove = (id) => {
           'Content-Type': 'application/json'
         }
       }
-  
       const promise = fetch(`${baseApiUrl}/${id}`, personsInit)
-      return promise.then(response => {return response.json()});
+      return promise.then(response => {
+        if(response.ok)
+        return response.json();
+        else if(response.status === 404)
+            throw new Error('Contact already removed');
+        else throw new Error('Failed to remove contact');
+      });
 
 };
 

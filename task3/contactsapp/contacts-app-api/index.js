@@ -39,6 +39,22 @@ app.get('/persons', (req, res) => {
     res.json(persons);
 });
 
+// Single contact info
+app.get('/persons/:id', (req, res) => {
+  const contactId = Number(req.params.id);
+
+  if(!contactId)
+    res.sendStatus(400);
+
+  const [contact] = persons.filter(person => person.id === contactId);
+
+  if(!contact)
+    res.sendStatus(404)
+
+  res.send(contact);
+
+});
+
 // Api basic info
 app.get('/info', (req, res) => {
   let requestTimeAsString = new Date().toString();

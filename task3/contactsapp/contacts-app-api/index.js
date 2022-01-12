@@ -5,6 +5,7 @@ const app = express();
 
 const hostname = '127.0.0.1';
 const port = 3001;
+const basePersonApiPath = '/api/persons';
 
 let persons =  [
       {
@@ -35,12 +36,12 @@ app.get('/', (req, res) => {
 });
 
 // Contact list
-app.get('/persons', (req, res) => {
+app.get(basePersonApiPath, (req, res) => {
     return res.json(persons);
 });
 
 // Single contact info
-app.get('/persons/:id', (req, res) => {
+app.get(`${basePersonApiPath}/:id`, (req, res) => {
   const contactId = Number(req.params.id);
 
   if(!contactId)
@@ -56,7 +57,7 @@ app.get('/persons/:id', (req, res) => {
 });
 
 // Remove single contact from contacts
-app.delete('/persons/:id', (req, res) => {
+app.delete(`${basePersonApiPath}/:id`, (req, res) => {
   const contactId = Number(req.params.id);
 
   if(!contactId)

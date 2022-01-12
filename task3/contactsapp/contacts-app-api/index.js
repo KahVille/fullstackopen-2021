@@ -31,12 +31,12 @@ let persons =  [
 
 
 app.get('/', (req, res) => {
-  res.send('<h1>Hello World</h1>');
+  return res.send('<h1>Hello World</h1>');
 });
 
 // Contact list
 app.get('/persons', (req, res) => {
-    res.json(persons);
+    return res.json(persons);
 });
 
 // Single contact info
@@ -44,14 +44,32 @@ app.get('/persons/:id', (req, res) => {
   const contactId = Number(req.params.id);
 
   if(!contactId)
-    res.sendStatus(400);
+    return res.sendStatus(400);
 
   const [contact] = persons.filter(person => person.id === contactId);
 
   if(!contact)
-    res.sendStatus(404)
+    return res.sendStatus(404)
 
-  res.send(contact);
+  return res.send(contact);
+
+});
+
+// Remove single contact from contacts
+app.delete('/persons/:id', (req, res) => {
+  const contactId = Number(req.params.id);
+
+  if(!contactId)
+    return res.sendStatus(400);
+
+  const [contact] = persons.filter(person => person.id === contactId);
+
+  if(!contact)
+    return res.sendStatus(404)
+
+  persons = persons.filter(person => person.id !== contactId);
+
+  return res.sendStatus(200);
 
 });
 
@@ -64,7 +82,7 @@ app.get('/info', (req, res) => {
     <p>${requestTimeAsString}</p>
   </div>`
 
-  res.send(contactApiInfoAsString)
+  return res.send(contactApiInfoAsString)
 
 });
 

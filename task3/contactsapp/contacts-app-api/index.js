@@ -1,8 +1,11 @@
 // Backend api server
 
 const express = require('express');
+const morgan = require('morgan');
+
 const app = express();
 app.use(express.json());
+app.use(morgan('tiny'));
 
 const hostname = '127.0.0.1';
 const port = 3001;
@@ -124,6 +127,11 @@ app.get('/info', (req, res) => {
   return res.send(contactApiInfoAsString)
 
 });
+
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ message: 'unknown endpoint' })
+}
+app.use(unknownEndpoint)
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);

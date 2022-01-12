@@ -34,8 +34,22 @@ app.get('/', (req, res) => {
   res.send('<h1>Hello World</h1>');
 });
 
+// Contact list
 app.get('/persons', (req, res) => {
     res.json(persons);
+});
+
+// Api basic info
+app.get('/info', (req, res) => {
+  let requestTimeAsString = new Date().toString();
+  let contactApiInfoAsString = 
+  `<div> 
+    <p>Phonebook has info for ${persons.length} people</p>
+    <p>${requestTimeAsString}</p>
+  </div>`
+
+  res.send(contactApiInfoAsString)
+
 });
 
 app.listen(port, hostname, () => {

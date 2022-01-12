@@ -1,4 +1,4 @@
-const baseApiUrl = 'http://localhost:3001/persons'
+const baseApiUrl = 'http://localhost:3001/api/persons'
 
 const getAll = () => {
     const personsInit = {
@@ -73,7 +73,7 @@ const remove = (id) => {
       }
       const promise = fetch(`${baseApiUrl}/${id}`, personsInit)
       return promise.then(response => {
-        if(response.ok)
+        if(response.ok) 
         return response.json();
         else if(response.status === 404)
             throw new Error('Contact already removed');

@@ -2,16 +2,18 @@
 
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 
 morgan.token('body', req => {
   return JSON.stringify(req.body)
 })
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
-const hostname = '127.0.0.1';
+const hostname = 'localhost';
 const port = 3001;
 const basePersonApiPath = '/api/persons';
 
@@ -60,7 +62,7 @@ app.get(`${basePersonApiPath}/:id`, (req, res) => {
   if(!contact)
     return res.sendStatus(404)
 
-  return res.send(contact);
+    return res.status(200).json(contact);  
 
 });
 
@@ -78,7 +80,7 @@ app.delete(`${basePersonApiPath}/:id`, (req, res) => {
 
   persons = persons.filter(person => person.id !== contactId);
 
-  return res.sendStatus(200);
+  return res.status(200).json(contactId);
 
 });
 
@@ -114,7 +116,7 @@ app.post(`${basePersonApiPath}`,(req, res) => {
 
   persons = [...persons, newContact];
 
-  return res.sendStatus(201);
+  return res.status(201).json(newContact);
 
 });
 

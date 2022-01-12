@@ -2,6 +2,7 @@
 
 const express = require('express');
 const app = express();
+app.use(express.json());
 
 const hostname = '127.0.0.1';
 const port = 3001;
@@ -66,13 +67,40 @@ app.delete(`${basePersonApiPath}/:id`, (req, res) => {
   const [contact] = persons.filter(person => person.id === contactId);
 
   if(!contact)
-    return res.sendStatus(404)
+    return res.sendStatus(404);
 
   persons = persons.filter(person => person.id !== contactId);
 
   return res.sendStatus(200);
 
 });
+
+const getRandomIntInclusive = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+}
+
+// Create new contact
+app.post(`${basePersonApiPath}`,(req, res) => {
+
+  const newContactData = JSON.parse(JSON.stringify(req.body));
+
+  if(!newContactData)
+    return res.statusCode(400);
+
+  const newContact = {
+    name: newContactData.name,
+    number: `${newContactData.number}`,
+    id: getRandomIntInclusive(0,7000),
+  };
+
+  persons = [...persons, newContact];
+
+  return res.sendStatus(201);
+
+});
+
 
 // Api basic info
 app.get('/info', (req, res) => {

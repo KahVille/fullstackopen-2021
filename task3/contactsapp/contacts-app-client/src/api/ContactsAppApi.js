@@ -1,4 +1,4 @@
-const baseApiUrl = 'http://localhost:3001/api/persons'
+const baseApiUrl = '/api/persons'
 
 const getAll = () => {
     const personsInit = {

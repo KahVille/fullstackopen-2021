@@ -1,8 +1,9 @@
 // Backend api server
-
+require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const { getAll, addNew } = require('./dataAccess');
 
 morgan.token('body', req => {
   return JSON.stringify(req.body)
@@ -47,7 +48,8 @@ app.get('/', (req, res) => {
 });
 
 // Contact list
-app.get(basePersonApiPath, (req, res) => {
+app.get(basePersonApiPath, async (req, res) => {
+    const persons = await getAll();
     return res.json(persons);
 });
 
@@ -85,14 +87,8 @@ app.delete(`${basePersonApiPath}/:id`, (req, res) => {
 
 });
 
-const getRandomIntInclusive = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
-}
-
 // Create new contact
-app.post(`${basePersonApiPath}`,(req, res) => {
+app.post(`${basePersonApiPath}`,async (req, res) => {
 
   const newContactData = JSON.parse(JSON.stringify(req.body));
 
@@ -112,12 +108,13 @@ app.post(`${basePersonApiPath}`,(req, res) => {
   const newContact = {
     name: newContactData.name,
     number: `${newContactData.number}`,
-    id: getRandomIntInclusive(0,7000),
   };
 
-  persons = [...persons, newContact];
+  const newPerson = await addNew(newContact.name,newContact.number)
 
-  return res.status(201).json(newContact);
+  persons = [...persons, newPerson];
+
+  return res.status(201).json(newPerson);
 
 });
 

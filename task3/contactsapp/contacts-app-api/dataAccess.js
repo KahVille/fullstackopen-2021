@@ -9,7 +9,12 @@ mongoose.connect(connectionString);
 const getAll = async () => {
    const promise = await ContactModel.find({});
     return promise;
-}
+};
+
+const getSingle = async (id) => {
+    const promise = await ContactModel.findById(id);
+    return promise;
+};
 
 const addNew = async (name, number) => {
     mongoose.connect(connectionString);
@@ -22,4 +27,4 @@ const addNew = async (name, number) => {
     return promise;
 };
 
-module.exports = {getAll, addNew}
+module.exports = {getAll, getSingle, addNew}

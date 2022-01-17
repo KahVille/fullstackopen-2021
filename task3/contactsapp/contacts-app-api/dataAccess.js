@@ -17,7 +17,6 @@ const getSingle = async (id) => {
 };
 
 const addNew = async (name, number) => {
-    mongoose.connect(connectionString);
     const contact = new ContactModel({
         name: name,
         number: number
@@ -27,4 +26,10 @@ const addNew = async (name, number) => {
     return promise;
 };
 
-module.exports = {getAll, getSingle, addNew}
+const removeSingle = async (id) => {
+    const promise = await ContactModel.findByIdAndRemove(id);
+    return promise;
+}
+
+
+module.exports = {getAll, getSingle, addNew, removeSingle}

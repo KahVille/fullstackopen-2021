@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
-const { getAll, getSingle, addNew } = require('./dataAccess');
+const { getAll, getSingle, addNew, removeSingle } = require('./dataAccess');
 
 morgan.token('body', req => {
   return JSON.stringify(req.body)
@@ -70,20 +70,19 @@ app.get(`${basePersonApiPath}/:id`, async (req, res) => {
 });
 
 // Remove single contact from contacts
-app.delete(`${basePersonApiPath}/:id`, (req, res) => {
-  const contactId = Number(req.params.id);
+app.delete(`${basePersonApiPath}/:id`, async (req, res) => {
+  const contactId = req.params.id;
 
   if(!contactId)
-    return res.sendStatus(400);
+   return res.sendStatus(400);
 
-  const [contact] = persons.filter(person => person.id === contactId);
+   const contact = await getSingle(contactId)
 
-  if(!contact)
-    return res.sendStatus(404);
+   if(!contact)
+     return res.sendStatus(404)
 
-  persons = persons.filter(person => person.id !== contactId);
-
-  return res.status(200).json(contactId);
+  const removedContact = await removeSingle(contactId);
+  return res.status(200).json(removedContact.id);
 
 });
 

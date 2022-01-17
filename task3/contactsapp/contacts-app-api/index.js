@@ -3,17 +3,17 @@ require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
-const { getAll, getSingle, addNew, removeSingle, updateSingle} = require('./dataAccess');
+const { getAll, getSingle, addNew, removeSingle, updateSingle } = require('./dataAccess');
 
 morgan.token('body', req => {
-  return JSON.stringify(req.body)
-})
+  return JSON.stringify(req.body);
+});
 
 const app = express();
 app.use(express.static('build'));
 app.use(cors());
 app.use(express.json());
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
 
 const hostname = '0.0.0.0';
 const port = process.env.PORT || 3001;
@@ -24,31 +24,30 @@ app.get('/', (req, res) => {
 });
 
 // Contact list
-app.get(basePersonApiPath, async (req, res) => {
+app.get(basePersonApiPath, async (req, res, next) => {
   try {
     const persons = await getAll();
-    return res.json(persons);    
+    return res.json(persons);
   } catch (error) {
     return next(error);
   }
-
 });
 
 // Single contact info
 app.get(`${basePersonApiPath}/:id`, async (req, res, next) => {
   const contactId = req.params.id;
 
-   if(!contactId)
+  if (!contactId)
     return res.sendStatus(400);
 
   try {
-      const contact = await getSingle(contactId)
-      if(!contact)
-      return res.sendStatus(404)
+    const contact = await getSingle(contactId);
+    if (!contact)
+      return res.sendStatus(404);
 
-      return res.status(200).json(contact);
+    return res.status(200).json(contact);
   } catch (error) {
-      return next(error);    
+    return next(error);
   }
 
 });
@@ -57,32 +56,32 @@ app.get(`${basePersonApiPath}/:id`, async (req, res, next) => {
 app.delete(`${basePersonApiPath}/:id`, async (req, res, next) => {
   const contactId = req.params.id;
 
-  if(!contactId)
-   return res.sendStatus(400);
+  if (!contactId)
+    return res.sendStatus(400);
 
-   try {
-    const contact = await getSingle(contactId)
+  try {
+    const contact = await getSingle(contactId);
 
-    if(!contact)
-      return res.sendStatus(404)
- 
-   const removedContact = await removeSingle(contactId);
-   return res.status(200).json(removedContact.id);
-   } catch (error) {
+    if (!contact)
+      return res.sendStatus(404);
+
+    const removedContact = await removeSingle(contactId);
+    return res.status(200).json(removedContact.id);
+  } catch (error) {
     return next(error);
-   }
+  }
 });
 
 // Create new contact
-app.post(`${basePersonApiPath}`,async (req, res, next) => {
+app.post(`${basePersonApiPath}`, async (req, res, next) => {
 
   const newContactData = JSON.parse(JSON.stringify(req.body));
 
-  if(!newContactData)
+  if (!newContactData)
     return res.statusCode(400);
 
-    if(!newContactData.number || !newContactData.name)
-      return res.status(400).json({message: 'Name or Number is missing'});
+  if (!newContactData.number || !newContactData.name)
+    return res.status(400).json({ message: 'Name or Number is missing' });
 
   const newContact = {
     name: newContactData.name,
@@ -90,8 +89,8 @@ app.post(`${basePersonApiPath}`,async (req, res, next) => {
   };
 
   try {
-    const newPerson = await addNew(newContact.name,newContact.number)
-    return res.status(201).json(newPerson);    
+    const newPerson = await addNew(newContact.name, newContact.number);
+    return res.status(201).json(newPerson);
   } catch (error) {
     return next(error);
   }
@@ -117,18 +116,18 @@ app.put(`${basePersonApiPath}/:id`, async (req, res, next) => {
 
 
 // Api basic info
-app.get('/info', async (req, res) => {
+app.get('/info', async (req, res, next) => {
   try {
     let requestTimeAsString = new Date().toString();
     const persons = await getAll();
 
-    let contactApiInfoAsString = 
-    `<div> 
+    let contactApiInfoAsString =
+      `<div> 
       <p>Phonebook has info for ${persons.length} people</p>
       <p>${requestTimeAsString}</p>
-    </div>`
-  
-    return res.send(contactApiInfoAsString)    
+    </div>`;
+
+    return res.send(contactApiInfoAsString);
   } catch (error) {
     return next(error);
   }
@@ -136,27 +135,26 @@ app.get('/info', async (req, res) => {
 });
 
 const unknownEndpoint = (req, res) => {
-  res.status(404).send({ message: 'unknown endpoint' })
-}
-app.use(unknownEndpoint)
+  res.status(404).send({ message: 'unknown endpoint' });
+};
+app.use(unknownEndpoint);
 
-const errorHandler = (error, request,response,next) => {
+const errorHandler = (error, request, response, next) => {
   console.error(error.message);
-  
+
   let handledErrorResponse = null;
   switch (error.name) {
-    case 'CastError':
-      handledErrorResponse = response.status(400).send({ message: 'malformatted id'})
-      break;
-
-    case 'ValidationError':
-      handledErrorResponse = response.status(400).send({ message: error.message});
-      break;
-    default:
-      break;
+  case  'CastError':
+    handledErrorResponse = response.status(400).send({ message: 'malformatted id' });
+    break;
+  case  'ValidationError':
+    handledErrorResponse = response.status(400).send({ message: error.message });
+    break;
+  default:
+    break;
   }
 
-  if(handledErrorResponse)
+  if (handledErrorResponse)
     return handledErrorResponse;
 
   next(error);

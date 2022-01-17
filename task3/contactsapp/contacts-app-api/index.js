@@ -96,23 +96,13 @@ app.post(`${basePersonApiPath}`,async (req, res) => {
 
     if(!newContactData.number || !newContactData.name)
       return res.status(400).json({message: 'Name or Number is missing'});
-
-    let isPersonDuplicate = false;
-    let personFound = persons.filter((person) => person.name.toLowerCase() === newContactData.name.toLowerCase());
-    isPersonDuplicate = personFound.length > 0 ? true : false;
-
-    if(isPersonDuplicate)
-      return res.status(400).json({message: `Contact is already added with the same name of ${newContactData.name}`});
-
+      
   const newContact = {
     name: newContactData.name,
     number: `${newContactData.number}`,
   };
 
   const newPerson = await addNew(newContact.name,newContact.number)
-
-  persons = [...persons, newPerson];
-
   return res.status(201).json(newPerson);
 
 });

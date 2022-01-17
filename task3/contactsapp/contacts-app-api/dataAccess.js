@@ -21,8 +21,6 @@ const addNew = async (name, number) => {
         name: name,
         number: number
     })
-
-    await contact.validate();
     const promise = await contact.save();
     return promise;
 };
@@ -33,7 +31,7 @@ const removeSingle = async (id) => {
 }
 
 const updateSingle = async (contactId,updatedContact) => {
-    const promise = await ContactModel.findByIdAndUpdate(contactId, updatedContact,{new:true});
+    const promise = await ContactModel.findOneAndUpdate({_id: contactId}, updatedContact,{new:true, runValidators: true, context: 'query'});
     return promise;
 }
 

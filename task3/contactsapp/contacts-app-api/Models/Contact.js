@@ -1,30 +1,21 @@
 const mongoose = require('mongoose');
+var uniqueValidator = require('mongoose-unique-validator');
 
 const contactSchema = new mongoose.Schema({
     name: {
       type: String,
+      minlength: 3,
+      unique: true,
       required: true
     },
     number: {
       type: String,
+      minlength: 8,
       required: true
     }
 });
 
-//Contact already exist's validation
-contactSchema.path('name').validate(async function validateDuplicatedName (value) {
-  if (!this.isNew && !this.isModified('name')) return true;
-
-  try {
-    const Contact = mongoose.model('Contact');
-    const count = await Contact.countDocuments({ name: value });
-    if ((this.isNew && count > 0) || (this.isModified('name') && count > 0)) return false;
-    return true;
-  } catch (error) {
-    return false;
-  }
-
-}, 'Name already exists');
+contactSchema.plugin(uniqueValidator);
 
 contactSchema.set('toJSON', {
     transform: (document, returnedObject) => {

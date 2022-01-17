@@ -22,6 +22,7 @@ const addNew = async (name, number) => {
         number: number
     })
 
+    await contact.validate();
     const promise = await contact.save();
     return promise;
 };

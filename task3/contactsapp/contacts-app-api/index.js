@@ -142,10 +142,23 @@ app.use(unknownEndpoint)
 
 const errorHandler = (error, request,response,next) => {
   console.error(error.message);
-
-  if(error.name === 'CastError')
-  return response.status(400).send({ message: 'malformatted id'})
   
+  let handledErrorResponse = null;
+  switch (error.name) {
+    case 'CastError':
+      handledErrorResponse = response.status(400).send({ message: 'malformatted id'})
+      break;
+
+    case 'ValidationError':
+      handledErrorResponse = response.status(400).send({ message: error.message});
+      break;
+    default:
+      break;
+  }
+
+  if(handledErrorResponse)
+    return handledErrorResponse;
+
   next(error);
 
 };

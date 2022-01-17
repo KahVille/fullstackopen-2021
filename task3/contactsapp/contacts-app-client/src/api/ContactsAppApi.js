@@ -35,7 +35,14 @@ const addNew = (newContact) => {
       return promise.then(response => {
         if(response.ok)
         return response.json();
-        else throw new Error('Failed to add new contact');
+        else if (!response.ok) {
+          if(response.status === 400) {
+            return response.text().then(resp => {
+              const respo = JSON.parse(resp);
+              throw new Error(respo.message);
+            })          
+        }
+        }
       });
 };
 
@@ -55,9 +62,14 @@ const update = (updatedContactInfo) => {
       return promise.then(response => {
         if(response.ok)
         return response.json();
-        else if(response.status === 404)
-            throw new Error('Contact already removed');
-        else throw new Error('Failed to update contact');
+        else if (!response.ok) {
+          if(response.status === 400) {
+            return response.text().then(resp => {
+              const respo = JSON.parse(resp);
+              throw new Error(respo.message);
+            })          
+        }
+        }
       });
 };
 

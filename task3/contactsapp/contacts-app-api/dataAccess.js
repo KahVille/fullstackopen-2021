@@ -31,5 +31,10 @@ const removeSingle = async (id) => {
     return promise;
 }
 
+const updateSingle = async (contactId,updatedContact) => {
+    const promise = await ContactModel.findByIdAndUpdate(contactId, updatedContact,{new:true});
+    return promise;
+}
 
-module.exports = {getAll, getSingle, addNew, removeSingle}
+
+module.exports = {getAll, getSingle, addNew, removeSingle, updateSingle}

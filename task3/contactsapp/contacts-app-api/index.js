@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
-const { getAll, getSingle, addNew, removeSingle } = require('./dataAccess');
+const { getAll, getSingle, addNew, removeSingle, updateSingle} = require('./dataAccess');
 
 morgan.token('body', req => {
   return JSON.stringify(req.body)
@@ -92,6 +92,23 @@ app.post(`${basePersonApiPath}`,async (req, res, next) => {
   try {
     const newPerson = await addNew(newContact.name,newContact.number)
     return res.status(201).json(newPerson);    
+  } catch (error) {
+    return next(error);
+  }
+
+});
+
+//Contact info update
+app.put(`${basePersonApiPath}/:id`, async (req, res, next) => {
+  try {
+    const newContactData = JSON.parse(JSON.stringify(req.body));
+    const updatedContactData = {
+      name: newContactData.name,
+      number: `${newContactData.number}`,
+    };
+
+    const updatedContact = await updateSingle(req.params.id, updatedContactData);
+    return res.status(200).json(updatedContact);
   } catch (error) {
     return next(error);
   }

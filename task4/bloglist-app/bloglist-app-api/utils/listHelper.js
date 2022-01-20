@@ -40,12 +40,33 @@ const mostBlogs = (blogs) => {
     const [mostBlogPostsByAuthor] = authorBlogCount;
 
     return {author: mostBlogPostsByAuthor.author, blogPostCount: mostBlogPostsByAuthor.blogPostCount};
+}
 
+const mostLikes = (blogs) => {
+    let copy = [...blogs];
 
-    //Palauta blogin Author ja MostBlogCount
+    const uniqueAuthors = [...new Set(copy.map(item => item.author))];
+    let authorBlogs = copy.map((element) => { return {author: element.author, likes: element.likes}});
+
+    let authorBlogCount = [];
+    uniqueAuthors.forEach((element) => {
+        const likeCount = authorBlogs.reduce((sum, blog) => {
+            return blog.author === element ? sum + blog.likes : sum;
+        }, 0);
+        authorBlogCount.push({
+            author: element,
+            likeCount: likeCount
+        });
+    });
+
+    authorBlogCount.sort((firstItem, secondItem) => firstItem.likeCount - secondItem.likeCount).reverse();
+    const [mostLikedAuthor] = authorBlogCount;
+
+    return {author: mostLikedAuthor.author, likeCount: mostLikedAuthor.likeCount};
+
 
 
 }
 
 
-module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs};
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes};

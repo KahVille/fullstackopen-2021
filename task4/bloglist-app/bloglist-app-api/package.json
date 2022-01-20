@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "npx nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --verbose"
   },
   "keywords": [
     "api",
@@ -24,6 +24,7 @@
     "eslint": "^8.7.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
+    "jest": "^27.4.7",
     "nodemon": "^2.0.15"
   }
 }

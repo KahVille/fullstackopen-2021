@@ -12,4 +12,11 @@ const totalLikes = (blogs) => {
     return likesCount;
 }
 
-module.exports = { dummy, totalLikes };
+const favoriteBlog = (blogs) => {
+    let copy = [...blogs];
+    copy.sort((firstItem, secondItem) => firstItem.likes - secondItem.likes).reverse();
+    const [mostLikedBlog] = copy;
+    return mostLikedBlog;
+}
+
+module.exports = { dummy, totalLikes, favoriteBlog};

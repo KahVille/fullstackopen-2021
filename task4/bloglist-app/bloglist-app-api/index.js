@@ -1,8 +1,11 @@
+require('dotenv').config();
 const http = require('http')
 const express = require('express')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
+
+const { databaseUrl } = require('./config');
 
 const blogSchema = mongoose.Schema({
   title: String,
@@ -13,7 +16,7 @@ const blogSchema = mongoose.Schema({
 
 const Blog = mongoose.model('Blog', blogSchema)
 
-const mongoUrl = ''
+const mongoUrl = databaseUrl;
 mongoose.connect(mongoUrl)
 
 app.use(cors())

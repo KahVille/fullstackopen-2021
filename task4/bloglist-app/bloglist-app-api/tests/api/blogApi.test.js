@@ -5,7 +5,7 @@ const {app} = require ('../../app');
 
 const apptest = supertest(app);
 
-describe('blogs api', () => {
+describe('blogs api route', () => {
     
     test('get all blogs', async () => {
         try {

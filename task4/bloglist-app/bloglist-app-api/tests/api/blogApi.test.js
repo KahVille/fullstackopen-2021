@@ -22,6 +22,13 @@ describe('blogs api route', () => {
             likes: 13
         }
 
+        expect(testBlog).toEqual(expect.objectContaining({
+            title: expect.any(String),
+            author: expect.any(String),
+            url: expect.any(String),
+            likes: expect.any(Number)
+        }))
+
         const response = await apptest
         .post('/api/blogs')
         .send(testBlog)

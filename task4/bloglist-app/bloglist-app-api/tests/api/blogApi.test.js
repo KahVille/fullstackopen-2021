@@ -42,6 +42,21 @@ describe('blogs api route', () => {
         expect(blogsEnd).toHaveLength(blogsStart.length + 1);
 });
 
+test('post a new invalid blog', async () => {
+    const testBlog = {
+        url: 'test-blog',
+        likes: 13
+    }
+
+    const response = await apptest
+    .post('/api/blogs')
+    .send(testBlog)
+    .expect(400)
+    .expect('Content-Type', /application\/json/);
+
+});
+
+
     afterAll(() => {
         mongoose.connection.close();
     });

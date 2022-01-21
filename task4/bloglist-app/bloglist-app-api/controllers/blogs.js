@@ -15,7 +15,7 @@ blogsRouter.post('/', async (request, response, next) => {
   try {
     const blog = await new Blog(request.body);
     const result = await blog.save();
-    return response.status(201).json(result)
+    return response.status(201).json(result);
   } catch (error) {
     return next(error);
   }

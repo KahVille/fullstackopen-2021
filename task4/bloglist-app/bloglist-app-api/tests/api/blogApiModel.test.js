@@ -1,4 +1,5 @@
 require('dotenv').config();
+const Blog = require('../../models/blog');
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const {app} = require ('../../app');
@@ -13,6 +14,24 @@ describe('blogs api model', () => {
         blogs.forEach(element => {
             expect(element.id).toBeDefined();
         });
+    });
+
+    test('model properties test', async () => {
+        const testBlog = {
+            title: 'teest blog',
+            author: 'Matti Meikäläinen',
+            url: 'test-blog'
+        }
+
+        const response = await apptest
+        .post('/api/blogs')
+        .send(testBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/);
+
+        const blog = response._body;
+        
+        expect(blog.likes).toBeDefined();
     });
 
     afterAll(() => {

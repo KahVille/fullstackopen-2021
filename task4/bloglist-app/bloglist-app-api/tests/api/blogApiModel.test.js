@@ -1,5 +1,4 @@
 require('dotenv').config();
-const Blog = require('../../models/blog');
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const {app} = require ('../../app');

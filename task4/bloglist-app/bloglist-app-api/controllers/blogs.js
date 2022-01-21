@@ -22,10 +22,20 @@ blogsRouter.post('/', async (request, response, next) => {
 });
 
 blogsRouter.delete('/:id', async (request, response, next) => {
-
   try {
     const removedBlog = await Blog.findByIdAndDelete(request.params.id.toString());
     return response.status(200).json(removedBlog);
+  } catch (error) {
+    return next(error);
+  }
+
+});
+
+blogsRouter.put('/:id', async (request, response, next) => {
+  try {
+    const updatedBlogDetails = JSON.parse(JSON.stringify(request.body));
+    const updatedBlogPost = await Blog.findByIdAndUpdate(request.params.id.toString(), updatedBlogDetails, {new: true});
+    return response.status(200).json(updatedBlogPost);
   } catch (error) {
     return next(error);
   }

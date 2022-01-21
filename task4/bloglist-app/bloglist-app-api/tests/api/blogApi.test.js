@@ -61,7 +61,7 @@ test('remove a blog', async () => {
     const blogsStart = responseStart.body.map(blog => blog)[0];
 
     let id = blogsStart.id;
-    
+
     const response = await apptest
     .delete(`/api/blogs/${id}`)
     .expect(200)
@@ -69,7 +69,19 @@ test('remove a blog', async () => {
 
 });
 
+test('update a blog post', async () => {
+    const responseStart = await apptest.get('/api/blogs').expect(200).expect('Content-Type', /application\/json/);
+    const blogsStart = responseStart.body.map(blog => blog)[0];
 
+    let updatedBlogPost = blogsStart;
+    updatedBlogPost.likes = updatedBlogPost.likes +1;
+        
+    const response = await apptest
+    .put(`/api/blogs/${updatedBlogPost.id}`)
+    .send(updatedBlogPost)
+    .expect(200)
+    .expect('Content-Type', /application\/json/);
+});
     afterAll(() => {
         mongoose.connection.close();
     });

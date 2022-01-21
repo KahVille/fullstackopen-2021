@@ -56,6 +56,19 @@ test('post a new invalid blog', async () => {
 
 });
 
+test('remove a blog', async () => {
+    const responseStart = await apptest.get('/api/blogs').expect(200).expect('Content-Type', /application\/json/);
+    const blogsStart = responseStart.body.map(blog => blog)[0];
+
+    let id = blogsStart.id;
+    
+    const response = await apptest
+    .delete(`/api/blogs/${id}`)
+    .expect(200)
+    .expect('Content-Type', /application\/json/);
+
+});
+
 
     afterAll(() => {
         mongoose.connection.close();

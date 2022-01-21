@@ -10,10 +10,12 @@ describe('blogs api model', () => {
     test('model integrity', async () => {
         const response = await apptest.get('/api/blogs');
         const blogs = response.body.map(blog => blog);
-        expect(blogs[0].id).toBeDefined()
+        blogs.forEach(element => {
+            expect(element.id).toBeDefined();
+        });
     });
 
-    afterAll(async () => {
-        await mongoose.connection.close();
+    afterAll(() => {
+        mongoose.connection.close();
     });
 });

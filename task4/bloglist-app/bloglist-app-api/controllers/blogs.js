@@ -1,5 +1,6 @@
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
+const User = require('../models/user');
 
 blogsRouter.get('/', async (request, response, next) => {
   try {
@@ -13,9 +14,25 @@ blogsRouter.get('/', async (request, response, next) => {
 
 blogsRouter.post('/', async (request, response, next) => {
   try {
-    const blog = await new Blog(request.body);
-    const result = await blog.save();
-    return response.status(201).json(result);
+
+    const body = request.body;
+
+    const user = await User.findById(body.userId);
+
+    const blog = await new Blog({
+      title: body.title,
+      author: body.author,
+      url: body.url,
+      likes: body.likes,
+      user: user._id
+    });
+
+    const savedBlog = await blog.save();
+    user.blogs = user.blogs.concat(savedBlog._id.toString());
+    
+    await user.save();
+
+    return response.status(201).json(savedBlog.toJSON());
   } catch (error) {
     return next(error);
   }

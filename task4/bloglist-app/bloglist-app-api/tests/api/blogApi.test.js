@@ -2,6 +2,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const {app} = require ('../../app');
+const helper = require('../utils/testHelper');
 
 const apptest = supertest(app);
 
@@ -15,26 +16,38 @@ describe('blogs api route', () => {
         const responseStart = await apptest.get('/api/blogs').expect(200).expect('Content-Type', /application\/json/);
         const blogsStart = responseStart.body.map(blog => blog);
 
+        const usersAtStart = await helper.usersInDatabase();
+
         const testBlog = {
             title: 'teest blog',
             author: 'Matti Meikäläinen',
             url: 'test-blog',
-            likes: 13
-        }
+            likes: 13,
+            userId: usersAtStart[0]._id.toString()
+        };
 
         expect(testBlog).toEqual(expect.objectContaining({
             title: expect.any(String),
             author: expect.any(String),
             url: expect.any(String),
-            likes: expect.any(Number)
+            likes: expect.any(Number),
+            userId: expect.any(String)
         }))
 
-        const response = await apptest
+        const result = await apptest
         .post('/api/blogs')
         .send(testBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/);
 
+        expect(result.body).toEqual(expect.objectContaining({
+            id: expect.any(String),
+            title: expect.any(String),
+            author: expect.any(String),
+            url: expect.any(String),
+            likes: expect.any(Number),
+            user: expect.any(String)
+        }))
 
         const responseEnd = await apptest.get('/api/blogs').expect(200).expect('Content-Type', /application\/json/);
         const blogsEnd = responseEnd.body.map(blog => blog);

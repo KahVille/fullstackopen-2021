@@ -25,7 +25,24 @@ describe('user account testing', () => {
         .expect(200)
         .expect('Content-Type', /application\/json/);
 
-    })
+    });
+
+    test('create invalid user', async () => {
+        const newUser = {
+            username: 're',
+            name: 'Matti Meikäläinen',
+            password: 'ts'
+        };
+
+        const result = await appUsertest
+        .post('/api/users')
+        .send(newUser)
+        .expect(400)
+        .expect('Content-Type', /application\/json/);
+
+        expect(result.body.message).toContain('invalid username and password');
+
+    });
 
     test('create new user with username and password', async () => {
         const usersAtStart = await helper.usersInDatabase();

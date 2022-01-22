@@ -14,7 +14,18 @@ usersRouter.get('/', async (request, response, next) => {
 usersRouter.post('/', async (request, response, next) => {
     try {
         const newUserData = request.body;
+
+        if((!newUserData.password && !newUserData.username) || (newUserData.password.length < 3 && newUserData.username.length < 3))
+            return response.status(400).json({message: 'invalid username and password'});
+
+        if(!newUserData.username || newUserData.username.length < 3)
+            return response.status(400).json({message: 'Invalid username'});
+
         
+        if(!newUserData.password || newUserData.password.length < 3)
+            return response.status(400).json({message: 'Invalid password'});
+
+
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(newUserData.password, saltRounds);
     

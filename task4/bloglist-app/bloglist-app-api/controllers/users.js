@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 usersRouter.get('/', async (request, response, next) => {
     try {
         const users = await User.find({});
-        return response.json(users);
+        return response.json(users.map(user => user.toJSON()));
     } catch (error) {
         return next(error);
     }

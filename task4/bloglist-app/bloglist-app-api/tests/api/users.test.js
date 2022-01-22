@@ -15,7 +15,7 @@ describe('user account testing', () => {
 
         const passwordHash = await bcrypt.hash('testpassword', 10);
 
-        const user = new User({username: 'testUser', passwordHash: passwordHash});
+        const user = new User({username: 'testUser', passwordHash: passwordHash, name: 'Mattti Meikäläinen'});
         await user.save();
     });
 
@@ -29,7 +29,6 @@ describe('user account testing', () => {
 
     test('create new user with username and password', async () => {
         const usersAtStart = await helper.usersInDatabase();
-        console.log(usersAtStart);
         const newUser = {
             username: 'newUsertest',
             name: 'Matti Meikäläinen',
@@ -47,6 +46,28 @@ describe('user account testing', () => {
 
         const usernames = usersAtEnd.map(user => user.username);
         expect(usernames).toContain(newUser.username);
+    });
+
+    test('create new user with same credentials as a another user', async () => {
+        const usersAtStart = await helper.usersInDatabase();
+        const newUser = {
+            username: 'testUser',
+            name: 'Matti Meikäläinen',
+            password: 'testpassword'
+        };
+
+        const result = await appUsertest
+        .post('/api/users')
+        .send(newUser)
+        .expect(400)
+        .expect('Content-Type', /application\/json/);
+
+        expect(result.body.message).toContain('`username` to be unique');
+
+        const usersAtEnd = await helper.usersInDatabase();
+
+        expect(usersAtEnd).toHaveLength(usersAtStart.length);
+
     })
 
 });

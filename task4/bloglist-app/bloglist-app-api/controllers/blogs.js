@@ -17,12 +17,10 @@ blogsRouter.get('/', async (request, response, next) => {
 
 blogsRouter.post('/', async (request, response, next) => {
   try {
-    const decodedToken = jwt.verify(request.token, secret);
+    const user = request.user;
 
-    if(!decodedToken || !decodedToken?.id)
-      return response.status(401).json({message: 'token missing or invalid'});
-
-    const user = await User.findById(decodedToken.id);
+    if(!user)
+    return response.status(400).json({message: 'user not found'});
 
     const body = request.body;
 
@@ -47,12 +45,11 @@ blogsRouter.post('/', async (request, response, next) => {
 
 blogsRouter.delete('/:id', async (request, response, next) => {
   try {
-    const decodedToken = jwt.verify(request.token, secret);
-    
-    if(!decodedToken || !decodedToken?.id)
-      return response.status(401).json({message: 'token missing or invalid'});
+    const user = request.user;
 
-    const user = await User.findById(decodedToken.id);
+    if(!user)
+    return response.status(400).json({message: 'user not found'});
+
 
     const removedBlog = await Blog.findOneAndDelete({_id: request.params.id.toString(), user: user._id.toString()});
     

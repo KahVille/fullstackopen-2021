@@ -7,10 +7,11 @@ const { usersRouter} = require('./controllers/users');
 const { blogsRouter } = require('./controllers/blogs');
 const { loginRouter } = require('./controllers/login'); 
 const middleware = require('./utils/middleware');
-const mongoUrl = databaseUrl;
-mongoose.connect(mongoUrl);
+
+mongoose.connect(databaseUrl);
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 app.use(middleware.tokenExtractor);

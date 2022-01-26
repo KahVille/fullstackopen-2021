@@ -1,5 +1,7 @@
 const logger = require('./logger');
 const { secret } = require('../config');
+const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 
 const uknownEndPoint = (request, response) => {
     return response.status(404).send({message: 'uknown endpoint'});
@@ -35,7 +37,10 @@ const tokenExtractor = (request, response, next) => {
 
 }
 
-const userExtractor = (request, response, next) => {
+const userExtractor = async (request, response, next) => {
+
+  if(!request.token)
+    return response.status(401).json({message: 'token missing or invalid'});
 
   const decodedToken = jwt.verify(request.token, secret);
     

@@ -23,7 +23,7 @@ loginRouter.post('/', async (request, response, next) => {
         userForToken,
         process.env.SECRET,
         { expiresIn: "1h" }
-        ); 
+        );
 
     return response.status(200)
     .send({token: token, username: user.username, name: user.name});

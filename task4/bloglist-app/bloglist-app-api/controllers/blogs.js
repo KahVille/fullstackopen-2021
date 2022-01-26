@@ -4,6 +4,12 @@ const Blog = require('../models/blog');
 
 blogsRouter.get('/', async (request, response, next) => {
   try {
+
+    const user = request.user;
+
+    if(!user)
+    return response.status(400).json({message: 'user not found'});
+
   const blogs = await Blog.find({}).populate('user', {username: 1, name: 1});
     return response.json(blogs);
   }
@@ -62,6 +68,12 @@ blogsRouter.delete('/:id', async (request, response, next) => {
 
 blogsRouter.put('/:id', async (request, response, next) => {
   try {
+
+    const user = request.user;
+
+    if(!user)
+    return response.status(400).json({message: 'user not found'});
+
     const updatedBlogDetails = JSON.parse(JSON.stringify(request.body));
     const updatedBlogPost = await Blog.findByIdAndUpdate(request.params.id.toString(), updatedBlogDetails, {new: true});
     return response.status(200).json(updatedBlogPost);

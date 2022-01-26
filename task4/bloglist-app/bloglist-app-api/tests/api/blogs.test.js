@@ -1,29 +1,58 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const supertest = require('supertest');
+const jwt = require('jsonwebtoken');
 const {app} = require ('../../app');
-const helper = require('../utils/testHelper');
+const { secret } = require('../../config');
+const User = require('../../models/user');
 
 const apptest = supertest(app);
 
 describe('blogs api route', () => {
-    
+
     test('get all blogs', async () => {
-            await apptest.get('/api/blogs').expect(200).expect('Content-Type', /application\/json/);
+        await apptest.get('/api/blogs').expect(200).expect('Content-Type', /application\/json/);
     });
 
     test('post a new valid blog and check length', async () => {
-        const responseStart = await apptest.get('/api/blogs').expect(200).expect('Content-Type', /application\/json/);
+        
+        const loginInformation = {
+            username: 'testUser',
+            password: 'testpassword'
+        };
+
+        //Login to get token
+        const logInResult = await apptest
+        .post('/api/login')
+        .send(loginInformation)
+        .expect(200)
+        .expect('Content-Type', /application\/json/);
+
+        expect(logInResult.body).toEqual(expect.objectContaining({
+            token: expect.any(String),
+            username: 'testUser',
+            name: expect.any(String)
+        }));
+
+        const tokenFromLogin = logInResult.body.token;
+
+        // Get blogs at start
+        const responseStart = await apptest.get('/api/blogs')
+        .set('Authorization', `Bearer ${tokenFromLogin}`)
+        .expect(200)
+        .expect('Content-Type', /application\/json/);
         const blogsStart = responseStart.body.map(blog => blog);
 
-        const usersAtStart = await helper.usersInDatabase();
+        const decodedToken = jwt.verify(tokenFromLogin, secret);
+        const user = await User.findById(decodedToken.id);
 
+        // Create a test blog
         const testBlog = {
             title: 'teest blog',
-            author: 'Matti Meikäläinen',
+            author: user.name,
             url: 'test-blog',
             likes: 13,
-            userId: usersAtStart[0]._id.toString()
+            userId: user._id.toString()
         };
 
         expect(testBlog).toEqual(expect.objectContaining({
@@ -34,13 +63,14 @@ describe('blogs api route', () => {
             userId: expect.any(String)
         }))
 
-        const result = await apptest
+        const blogResult = await apptest
         .post('/api/blogs')
         .send(testBlog)
+        .set('Authorization', `Bearer ${tokenFromLogin}`)
         .expect(201)
         .expect('Content-Type', /application\/json/);
 
-        expect(result.body).toEqual(expect.objectContaining({
+        expect(blogResult.body).toEqual(expect.objectContaining({
             id: expect.any(String),
             title: expect.any(String),
             author: expect.any(String),
@@ -49,7 +79,11 @@ describe('blogs api route', () => {
             user: expect.any(String)
         }))
 
-        const responseEnd = await apptest.get('/api/blogs').expect(200).expect('Content-Type', /application\/json/);
+        const responseEnd = await apptest.get('/api/blogs')
+        .set('Authorization', `Bearer ${tokenFromLogin}`)
+        .expect(200)
+        .expect('Content-Type', /application\/json/);
+
         const blogsEnd = responseEnd.body.map(blog => blog);
 
         expect(blogsEnd).toHaveLength(blogsStart.length + 1);

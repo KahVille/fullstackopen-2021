@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Blogs from "./components/Blogs";
 import blogsApi from "./api/blogsApi";
 import Notification from "./components/Notification";
-//import Login from "./components/Login";
+import Login from "./components/Login";
 import loginApi from "./api/loginApi";
 
 const App = () => {
@@ -24,23 +24,6 @@ const App = () => {
 
 const [username, setUsername] = useState('');
 const [password, setPassword] = useState('');
-
-  //This follows the course implementation for now. So no props to login form yeat. Todo Make login i'ts own component file
-  const Login = () => (
-            <form className="login-form" onSubmit={(event) => handleLogin(event)}>
-                <div>
-                    <label>
-                        Username <input type="text" name="Username" value={username} onChange={({target}) => setUsername(target.value)}/>
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Password <input type="password" name="Password" value={password} onChange={({target}) => setPassword(target.value)}/>
-                    </label>
-                </div>
-                <button type="submit">Login</button>
-            </form>
-)
 
   const setErrorMessage = (message) => {
     const errorMessage = {message: message, classname: 'error-message'}
@@ -75,7 +58,12 @@ const [password, setPassword] = useState('');
       
       <Notification message={notification.message} classname={notification.classname} />
 
-      {!user?.token ? <Login /> : <Blogs blogs={blogs} />}
+      {!user?.token ? 
+      <Login  handleSubmit={(event) => handleLogin(event)}
+              handleUsernameChange={({target}) => setUsername(target.value)}
+              handlePasswordChange={({target})=> setPassword(target.value)}
+      /> 
+      : <Blogs blogs={blogs} />}
 
     </div>
   );

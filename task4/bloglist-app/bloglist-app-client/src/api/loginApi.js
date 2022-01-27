@@ -1,18 +1,17 @@
-const baseUrl = '/api/blogs';
+const baseUrl = '/api/login';
 
-const getAll = async (token) => {
+const login = async (loginInformation) => {
+    console.log(loginInformation);
     try {
-        const requestHeaders = new Headers({
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          });
-
         const requestOptions = {
-            method: 'GET',
+            method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
             credentials: 'same-origin',
-            headers: requestHeaders
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(loginInformation)
           }
     
         const request = await fetch(baseUrl,requestOptions);
@@ -20,7 +19,7 @@ const getAll = async (token) => {
 
         if (!response.ok) {
               const responseText = await response.text();
-              throw new Error(JSON.parse(responseText)?.message || 'Unable to get any blogs');
+              throw new Error(JSON.parse(responseText)?.message || 'Unable to login');
         }
         return response.json();
     } catch (error) {
@@ -28,8 +27,8 @@ const getAll = async (token) => {
     }
 };
 
-const blogsApi = {
-    getAll
+const loginApi = {
+    login
 }
 
-export default blogsApi;
+export default loginApi;

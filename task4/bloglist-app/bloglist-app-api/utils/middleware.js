@@ -26,8 +26,12 @@ const errorHandler = (error, request, response, next) => {
 
 const tokenExtractor = (request, response, next) => {
   const authorization = request.get('authorization');
-  if(!authorization || !authorization.toLowerCase().startsWith('bearer '))
-    return response.status(401).json({message: 'token missing or invalid'});
+  if(!authorization)
+    return response.status(401).json({message: 'token missing'});
+
+  if(!authorization.toLowerCase().startsWith('bearer '))
+    return response.status(401).json({message: 'token invalid'});
+
 
   const extractedToken = authorization.substring(7);
 
@@ -39,10 +43,11 @@ const tokenExtractor = (request, response, next) => {
 
 const userExtractor = async (request, response, next) => {
 
-  if(!request.token)
+  const token = request.token;
+  if(!token || token === 'null' || token === 'undefined')
     return response.status(401).json({message: 'token missing or invalid'});
 
-  const decodedToken = jwt.verify(request.token, secret);
+  const decodedToken = jwt.verify(token, secret);
     
   if(!decodedToken || !decodedToken?.id)
     return response.status(401).json({message: 'token missing or invalid'});

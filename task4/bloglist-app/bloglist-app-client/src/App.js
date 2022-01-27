@@ -11,8 +11,13 @@ const App = () => {
     event.preventDefault();
 
     try {
-      const loggedInUser = await loginApi.login({username, password});
-      setUser(loggedInUser);
+      const loggedInBlogListappUser = await loginApi.login({username, password});
+      
+      window.localStorage.setItem(
+        'loggedInBlogListappUser', JSON.stringify(loggedInBlogListappUser)
+      )
+      
+      setUser(loggedInBlogListappUser);
       setUsername('');
       setPassword('');
       const emptyMessage = {message: '', classname: ''}
@@ -25,6 +30,7 @@ const App = () => {
   const handleLogOut = async () => {
     const emptyUser = {token: null, username: null, name: null};
     setUser(emptyUser);
+    window.localStorage.removeItem('loggedInBlogListappUser');
   }
 
 const [username, setUsername] = useState('');
@@ -45,6 +51,21 @@ const [password, setPassword] = useState('');
   const [notification, setNotification] = useState({message: '', classname: ''});
 
   useEffect(() => {
+
+    const loggedInUserJSON = window.localStorage.getItem('loggedInBlogListappUser');
+
+    if(! loggedInUserJSON)
+      return;
+
+    const loggedInUser = JSON.parse(loggedInUserJSON);
+    if(!loggedInUser)
+      return;
+
+    setUser(loggedInUser);    
+
+  },[])
+
+  useEffect(() => {
     const fetchBlogData = async () => {
       try {
         const response = await blogsApi.getAll(user.token);
@@ -53,7 +74,6 @@ const [password, setPassword] = useState('');
       } catch (error) {
         setErrorMessage(error.message);
       }
-
     }
     fetchBlogData();
   }, [user.token]);

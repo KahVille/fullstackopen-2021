@@ -1,7 +1,6 @@
 const baseUrl = '/api/login';
 
 const login = async (loginInformation) => {
-    console.log(loginInformation);
     try {
         const requestOptions = {
             method: 'POST',

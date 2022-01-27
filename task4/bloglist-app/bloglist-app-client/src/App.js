@@ -22,6 +22,11 @@ const App = () => {
     }
 }
 
+  const handleLogOut = async () => {
+    const emptyUser = {token: null, username: null, name: null};
+    setUser(emptyUser);
+  }
+
 const [username, setUsername] = useState('');
 const [password, setPassword] = useState('');
 
@@ -63,7 +68,7 @@ const [password, setPassword] = useState('');
               handleUsernameChange={({target}) => setUsername(target.value)}
               handlePasswordChange={({target})=> setPassword(target.value)}
       /> 
-      : <Blogs blogs={blogs} />}
+      : <Blogs blogs={blogs} userDetails={user} handleUserLogOut={() => handleLogOut()}/>}
 
     </div>
   );

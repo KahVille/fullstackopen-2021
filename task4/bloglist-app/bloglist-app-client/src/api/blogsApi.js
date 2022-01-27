@@ -28,8 +28,38 @@ const getAll = async (token) => {
     }
 };
 
+const createBlog = async (token, blogData) => {
+    try {
+        const requestHeaders = new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          });
+
+        const requestOptions = {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: requestHeaders,
+            body: JSON.stringify(blogData)
+          }
+    
+        const request = await fetch(baseUrl,requestOptions);
+        const response = await request;
+
+        if (!response.ok) {
+              const responseText = await response.text();
+              throw new Error(JSON.parse(responseText)?.message || 'Unable to create new blog post');
+        }
+        return response.json();
+    } catch (error) {
+        throw Error(error.message);
+    }
+}
+
 const blogsApi = {
-    getAll
+    getAll,
+    createBlog
 }
 
 export default blogsApi;

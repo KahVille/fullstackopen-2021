@@ -7,6 +7,32 @@ import loginApi from "./api/loginApi";
 
 const App = () => {
 
+  const handleCreateBlog = async (event) => {
+    event.preventDefault();
+
+    try {
+      const blogData = {
+        title: newBlogTitle,
+        author: newBlogAuthor,
+        url: newBlogUrl
+      }
+      const newBlog = await blogsApi.createBlog(user.token, blogData);
+      if(!newBlog)
+        {
+          setErrorMessage('Blog could not be created');
+          setIsNewBlogCreated(false);
+          return;
+        }
+
+        setSuccessMessage('New blog Added');
+        setIsNewBlogCreated(true);
+      
+    } catch (error) {
+      setErrorMessage(error.message);
+    }
+
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -50,6 +76,11 @@ const [password, setPassword] = useState('');
   const [blogs, setBlogs] = useState([]);
   const [notification, setNotification] = useState({message: '', classname: ''});
 
+  const [newBlogTitle, setNewBlogTitle] = useState('');
+  const [newBlogAuthor, setNewBlogAuthor] = useState('');
+  const [newBlogUrl, setNewBlogUrl] = useState('');
+  const [isNewBlogCreated, setIsNewBlogCreated] = useState(false);
+
   useEffect(() => {
 
     const loggedInUserJSON = window.localStorage.getItem('loggedInBlogListappUser');
@@ -71,12 +102,13 @@ const [password, setPassword] = useState('');
         const response = await blogsApi.getAll(user.token);
         setBlogs(response);
         setSuccessMessage('Blogs fetched');
+        setIsNewBlogCreated(false);
       } catch (error) {
         setErrorMessage(error.message);
       }
     }
     fetchBlogData();
-  }, [user.token]);
+  }, [user.token, isNewBlogCreated]);
 
   return (
     <div className="App">
@@ -88,7 +120,13 @@ const [password, setPassword] = useState('');
               handleUsernameChange={({target}) => setUsername(target.value)}
               handlePasswordChange={({target})=> setPassword(target.value)}
       /> 
-      : <Blogs blogs={blogs} userDetails={user} handleUserLogOut={() => handleLogOut()}/>}
+      : <Blogs blogs={blogs} userDetails={user} 
+          handleUserLogOut={() => handleLogOut()}
+          handleCreateBlog = {(event) => handleCreateBlog(event)} 
+          handleTitleChange={({target}) => setNewBlogTitle(target.value)} 
+          handleAuthorChange ={({target}) => setNewBlogAuthor(target.value)}
+          handleUrlChange = {({target}) => setNewBlogUrl(target.value)}   
+      />}
 
     </div>
   );

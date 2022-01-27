@@ -1,0 +1,17 @@
+.error-message {
+    background-color: rgb(226, 29, 39);
+    padding: 5px;
+}
+
+.error-message > p {
+    color: whitesmoke;
+}
+
+.success-message {
+    background-color: rgb(29, 226, 29);
+    padding: 5px;
+}
+
+.success-message > p {
+    color: whitesmoke;
+}

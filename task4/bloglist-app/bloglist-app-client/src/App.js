@@ -4,6 +4,7 @@ import blogsApi from "./api/blogsApi";
 import Notification from "./components/Notification";
 import Login from "./components/Login";
 import loginApi from "./api/loginApi";
+import './App.css'
 
 const App = () => {
 

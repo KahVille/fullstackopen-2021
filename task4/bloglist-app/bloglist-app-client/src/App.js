@@ -10,6 +10,23 @@ const App = () => {
 
   const createBlogFormRef = useRef();
 
+  const handleLikeBlogPost = async(blogData, blogId) => {
+      try {
+
+        const likedPost = await blogsApi.likeBlogPost(user.token, blogData, blogId);
+        if(!likedPost) {
+          setErrorMessage('Blog could not be liked');
+          setIsBlogPostLiked(false);
+          return;
+        }
+
+        setSuccessMessage('Blog Post liked');
+        setIsBlogPostLiked(true);
+      } catch (error) {
+        setErrorMessage(error.message);
+      }
+  }
+
   const handleCreateBlog = async (blogData) => {
     try {
       createBlogFormRef.current.toggleVisibility();
@@ -72,6 +89,8 @@ const [password, setPassword] = useState('');
   const [blogs, setBlogs] = useState([]);
   const [notification, setNotification] = useState({message: '', classname: ''});
   const [isNewBlogCreated, setIsNewBlogCreated] = useState(false);
+  const [isBlogPostLiked, setIsBlogPostLiked] = useState(false);
+
 
   useEffect(() => {
 
@@ -100,7 +119,7 @@ const [password, setPassword] = useState('');
       }
     }
     fetchBlogData();
-  }, [user.token, isNewBlogCreated]);
+  }, [user.token, isNewBlogCreated, isBlogPostLiked]);
 
   return (
     <div className="App">
@@ -116,6 +135,7 @@ const [password, setPassword] = useState('');
           handleUserLogOut={() => handleLogOut()}
           handleCreateBlog = {(blogData) => handleCreateBlog(blogData)}
           createBlogFormRef={createBlogFormRef}
+          onLikeBlogPost={handleLikeBlogPost}
       />}
 
     </div>

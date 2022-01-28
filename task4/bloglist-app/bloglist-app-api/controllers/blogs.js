@@ -11,7 +11,7 @@ blogsRouter.get('/', async (request, response, next) => {
     return response.status(400).json({message: 'user not found'});
 
   const blogs = await Blog.find({}).populate('user', {username: 1, name: 1});
-    return response.json(blogs);
+    return response.json(blogs.map(blog => blog.toJSON()));
   }
   catch(error) {
     return next(error);
@@ -59,7 +59,7 @@ blogsRouter.delete('/:id', async (request, response, next) => {
     if(!removedBlog || !removedBlog._id || removedBlog.user.toString() !== user._id.toString())
       return response.status(400).json({message: 'invalid remove operation'});
 
-    return response.status(200).json(removedBlog);
+    return response.status(200).json(removedBlog.toJSON());
   } catch (error) {
     return next(error);
   }
@@ -76,7 +76,7 @@ blogsRouter.put('/:id', async (request, response, next) => {
 
     const updatedBlogDetails = JSON.parse(JSON.stringify(request.body));
     const updatedBlogPost = await Blog.findByIdAndUpdate(request.params.id.toString(), updatedBlogDetails, {new: true});
-    return response.status(200).json(updatedBlogPost);
+    return response.status(200).json(updatedBlogPost.toJSON());
   } catch (error) {
     return next(error);
   }

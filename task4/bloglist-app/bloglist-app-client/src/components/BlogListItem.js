@@ -1,10 +1,10 @@
 import Blog from './Blog';
 
-const BlogListItem = ({blog}) => {
+const BlogListItem = ({blog, onLikeBlogPost}) => {
 
     return (
         <div>
-            <Blog blog={blog} />
+            <Blog blog={blog} onLikeBlogPost={onLikeBlogPost} />
         </div>
     )
 }

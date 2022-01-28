@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const Blog = ({blog}) => {
+const Blog = ({blog, onLikeBlogPost}) => {
 
     const blogStyle = {
         padding: 10,
@@ -11,12 +11,31 @@ const Blog = ({blog}) => {
 
     const [showBlogDetails, setShowBlogDetails] = useState(false);
 
+    const [blogLikes, setBlogLikes] = useState(blog.likes);
+
     const showInList = {display: showBlogDetails ? 'none' : ''}
     const showInDetail = {display: showBlogDetails ? '' : 'none'}
 
     const toggleShowBlogDetails = () => {
         setShowBlogDetails(!showBlogDetails);
     }
+
+    const likeBlogPost = () => {
+        setBlogLikes(blogLikes + 1);
+    }
+
+    useEffect(() => {
+        const likedBlogPost = {
+            title: blog.title,
+            url: blog.url,
+            author: blog.author,
+            user: blog.user?.id || null,
+            likes: blogLikes
+        }
+        const likedBlogPostId = blog.id;
+        onLikeBlogPost(likedBlogPost, likedBlogPostId);
+    }, [blogLikes])
+
 
     return (
 
@@ -32,8 +51,8 @@ const Blog = ({blog}) => {
         <button onClick={() => toggleShowBlogDetails()}>hide details</button>
         <p>{blog.url}</p>
         <div>
-        <p> likes: {blog.likes}</p>
-        <button>Like 👍</button>
+        <p> likes: {blogLikes}</p>
+        <button onClick={() => likeBlogPost()}>Like 👍</button>
         </div>
 
 

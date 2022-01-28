@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Blogs from "./components/Blogs";
 import blogsApi from "./api/blogsApi";
 import Notification from "./components/Notification";
@@ -8,8 +8,11 @@ import './App.css'
 
 const App = () => {
 
+  const createBlogFormRef = useRef();
+
   const handleCreateBlog = async (blogData) => {
     try {
+      createBlogFormRef.current.toggleVisibility();
       const newBlog = await blogsApi.createBlog(user.token, blogData);
       if(!newBlog)
         {
@@ -20,6 +23,7 @@ const App = () => {
         setSuccessMessage('New blog Added');
         setIsNewBlogCreated(true);     
     } catch (error) {
+      createBlogFormRef.current.toggleVisibility();
       setErrorMessage(error.message);
     }
 
@@ -111,6 +115,7 @@ const [password, setPassword] = useState('');
       : <Blogs blogs={blogs} userDetails={user} 
           handleUserLogOut={() => handleLogOut()}
           handleCreateBlog = {(blogData) => handleCreateBlog(blogData)}
+          createBlogFormRef={createBlogFormRef}
       />}
 
     </div>

@@ -1,7 +1,6 @@
 import Blog from './Blog';
 import CreateBlog from './CreateBlog';
-
-const Blogs = ({blogs, userDetails, handleUserLogOut, handleCreateBlog}) => {
+const Blogs = ({blogs, userDetails, handleUserLogOut, handleCreateBlog, createBlogFormRef}) => {
     return (
         <div className="blogs">
             <h2>Blogs</h2>
@@ -11,7 +10,7 @@ const Blogs = ({blogs, userDetails, handleUserLogOut, handleCreateBlog}) => {
                 <button onClick={() => handleUserLogOut()}>Log out</button>
             </div>
 
-            <CreateBlog createNewBlog = {(blogData) => handleCreateBlog(blogData)}/>
+            <CreateBlog createNewBlog = {(blogData) => handleCreateBlog(blogData)} createBlogFormRef = {createBlogFormRef}/>
             
         <h2>Blog listings</h2>
         {blogs.map(blog =>

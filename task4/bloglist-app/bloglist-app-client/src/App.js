@@ -8,15 +8,8 @@ import './App.css'
 
 const App = () => {
 
-  const handleCreateBlog = async (event) => {
-    event.preventDefault();
-
+  const handleCreateBlog = async (blogData) => {
     try {
-      const blogData = {
-        title: newBlogTitle,
-        author: newBlogAuthor,
-        url: newBlogUrl
-      }
       const newBlog = await blogsApi.createBlog(user.token, blogData);
       if(!newBlog)
         {
@@ -24,10 +17,8 @@ const App = () => {
           setIsNewBlogCreated(false);
           return;
         }
-
         setSuccessMessage('New blog Added');
-        setIsNewBlogCreated(true);
-      
+        setIsNewBlogCreated(true);     
     } catch (error) {
       setErrorMessage(error.message);
     }
@@ -76,10 +67,6 @@ const [password, setPassword] = useState('');
   const [user, setUser] = useState({token: null, username: null, name: null});
   const [blogs, setBlogs] = useState([]);
   const [notification, setNotification] = useState({message: '', classname: ''});
-
-  const [newBlogTitle, setNewBlogTitle] = useState('');
-  const [newBlogAuthor, setNewBlogAuthor] = useState('');
-  const [newBlogUrl, setNewBlogUrl] = useState('');
   const [isNewBlogCreated, setIsNewBlogCreated] = useState(false);
 
   useEffect(() => {
@@ -123,10 +110,7 @@ const [password, setPassword] = useState('');
       /> 
       : <Blogs blogs={blogs} userDetails={user} 
           handleUserLogOut={() => handleLogOut()}
-          handleCreateBlog = {(event) => handleCreateBlog(event)} 
-          handleTitleChange={({target}) => setNewBlogTitle(target.value)} 
-          handleAuthorChange ={({target}) => setNewBlogAuthor(target.value)}
-          handleUrlChange = {({target}) => setNewBlogUrl(target.value)}   
+          handleCreateBlog = {(blogData) => handleCreateBlog(blogData)}
       />}
 
     </div>

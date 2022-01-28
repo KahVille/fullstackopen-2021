@@ -1,7 +1,7 @@
 import Blog from './Blog';
 import CreateBlog from './CreateBlog';
 
-const Blogs = ({blogs, userDetails, handleUserLogOut, handleCreateBlog, handleTitleChange, handleAuthorChange, handleUrlChange}) => {
+const Blogs = ({blogs, userDetails, handleUserLogOut, handleCreateBlog}) => {
     return (
         <div className="blogs">
             <h2>Blogs</h2>
@@ -11,12 +11,7 @@ const Blogs = ({blogs, userDetails, handleUserLogOut, handleCreateBlog, handleTi
                 <button onClick={() => handleUserLogOut()}>Log out</button>
             </div>
 
-            <CreateBlog handleCreateBlog = {(event) => handleCreateBlog(event)}
-            handleTitleChange={(event) => handleTitleChange(event)} 
-            handleAuthorChange ={(event) => handleAuthorChange(event)} 
-            handleUrlChange = {(event) => handleUrlChange(event)}
-            />
-
+            <CreateBlog createNewBlog = {(blogData) => handleCreateBlog(blogData)}/>
             
         <h2>Blog listings</h2>
         {blogs.map(blog =>

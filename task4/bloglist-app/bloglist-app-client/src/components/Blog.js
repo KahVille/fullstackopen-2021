@@ -20,8 +20,13 @@ const Blog = ({blog, onLikeBlogPost, onRemoveBlogPost}) => {
         setShowBlogDetails(!showBlogDetails);
     }
 
-    const removeBlogPost = (id) => onRemoveBlogPost(id);
-
+    const removeBlogPost = (id) => {
+     
+        if(!window.confirm(`Do you want really to remove blog ${blog.title} by ${blog.author} from the listing?`))
+            return;
+        
+        onRemoveBlogPost(id);
+    }
     const likeBlogPost = () => {
         setBlogLikes(blogLikes + 1);
     }

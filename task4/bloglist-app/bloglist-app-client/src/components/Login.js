@@ -1,3 +1,5 @@
+import propTypes from "prop-types";
+
 const Login = ({
     handleSubmit,
     handleUsernameChange,
@@ -27,5 +29,13 @@ const Login = ({
         </div>
     )
 }
+
+Login.PropTypes = {
+    handleSubmit: propTypes.func.isRequired,
+    handleUsernameChange: propTypes.func.isRequired,
+    handlePasswordChange: propTypes.func.isRequired,
+    username: propTypes.string.isRequired,
+    password: propTypes.string.isRequired,
+};
 
 export default Login;

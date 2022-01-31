@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import Blog from "./Blog";
 
 describe('blog unit test',() => {
-    test('render blog content in a list view', () => {
+    test('render blog content in a list view', async () => {
 
         const blog = {
             url: 'test-blog-post',

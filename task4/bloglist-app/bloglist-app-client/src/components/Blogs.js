@@ -1,6 +1,6 @@
 import BlogList from './BlogList';
 import CreateBlog from './CreateBlog';
-const Blogs = ({blogs, userDetails, handleUserLogOut, handleCreateBlog, createBlogFormRef, onLikeBlogPost, onRemoveBlogPost}) => {
+const Blogs = ({ blogs, userDetails, handleUserLogOut, handleCreateBlog, createBlogFormRef, onLikeBlogPost, onRemoveBlogPost }) => {
     return (
         <div className="blogs">
             <h2>Blogs</h2>
@@ -11,11 +11,11 @@ const Blogs = ({blogs, userDetails, handleUserLogOut, handleCreateBlog, createBl
             </div>
 
             <CreateBlog createNewBlog = {(blogData) => handleCreateBlog(blogData)} createBlogFormRef = {createBlogFormRef}/>
-            
-        <h2>Blog listings</h2>
-        <BlogList blogs={blogs} onLikeBlogPost={onLikeBlogPost} onRemoveBlogPost={onRemoveBlogPost}/>
+
+            <h2>Blog listings</h2>
+            <BlogList blogs={blogs} onLikeBlogPost={onLikeBlogPost} onRemoveBlogPost={onRemoveBlogPost}/>
         </div>
-    )
-}
+    );
+};
 
 export default Blogs;

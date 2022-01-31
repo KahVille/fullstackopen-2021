@@ -8,17 +8,17 @@ const login = async (loginInformation) => {
             cache: 'no-cache',
             credentials: 'same-origin',
             headers: {
-              'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(loginInformation)
-          }
-    
+        };
+
         const request = await fetch(baseUrl,requestOptions);
         const response = await request;
 
         if (!response.ok) {
-              const responseText = await response.text();
-              throw new Error(JSON.parse(responseText)?.message || 'Unable to login');
+            const responseText = await response.text();
+            throw new Error(JSON.parse(responseText)?.message || 'Unable to login');
         }
         return response.json();
     } catch (error) {
@@ -28,6 +28,6 @@ const login = async (loginInformation) => {
 
 const loginApi = {
     login
-}
+};
 
 export default loginApi;

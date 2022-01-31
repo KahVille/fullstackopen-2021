@@ -1,4 +1,4 @@
-import propTypes from "prop-types";
+import propTypes from 'prop-types';
 
 const Login = ({
     handleSubmit,
@@ -27,8 +27,8 @@ const Login = ({
                 <button type="submit">Login</button>
             </form>
         </div>
-    )
-}
+    );
+};
 
 Login.PropTypes = {
     handleSubmit: propTypes.func.isRequired,

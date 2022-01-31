@@ -5,7 +5,7 @@ const getAll = async (token) => {
         const requestHeaders = new Headers({
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
-          });
+        });
 
         const requestOptions = {
             method: 'GET',
@@ -13,14 +13,14 @@ const getAll = async (token) => {
             cache: 'no-cache',
             credentials: 'same-origin',
             headers: requestHeaders
-          }
-    
-        const request = await fetch(baseUrl,requestOptions);
+        };
+
+        const request = await fetch(baseUrl, requestOptions);
         const response = await request;
 
         if (!response.ok) {
-              const responseText = await response.text();
-              throw new Error(JSON.parse(responseText)?.message || 'Unable to get any blogs');
+            const responseText = await response.text();
+            throw new Error(JSON.parse(responseText)?.message || 'Unable to get any blogs');
         }
 
         return response.json();
@@ -34,7 +34,7 @@ const createBlog = async (token, blogData) => {
         const requestHeaders = new Headers({
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
-          });
+        });
 
         const requestOptions = {
             method: 'POST',
@@ -43,28 +43,28 @@ const createBlog = async (token, blogData) => {
             credentials: 'same-origin',
             headers: requestHeaders,
             body: JSON.stringify(blogData)
-          }
-    
-        const request = await fetch(baseUrl,requestOptions);
+        };
+
+        const request = await fetch(baseUrl, requestOptions);
         const response = await request;
 
         if (!response.ok) {
-              const responseText = await response.text();
-              throw new Error(JSON.parse(responseText)?.message || 'Unable to create new blog post');
+            const responseText = await response.text();
+            throw new Error(JSON.parse(responseText)?.message || 'Unable to create new blog post');
         }
 
         return response.json();
     } catch (error) {
         throw Error(error.message);
     }
-}
+};
 
 const likeBlogPost = async (token, blogData, blogId) => {
     try {
         const requestHeaders = new Headers({
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
-          });
+        });
 
         const requestOptions = {
             method: 'PUT',
@@ -73,28 +73,28 @@ const likeBlogPost = async (token, blogData, blogId) => {
             credentials: 'same-origin',
             headers: requestHeaders,
             body: JSON.stringify(blogData)
-          }
-    
-        const request = await fetch( `${baseUrl}/${blogId}`,requestOptions);
+        };
+
+        const request = await fetch(`${baseUrl}/${blogId}`, requestOptions);
         const response = await request;
 
         if (!response.ok) {
-              const responseText = await response.text();
-              throw new Error(JSON.parse(responseText)?.message || 'Unable to like a blog post');
+            const responseText = await response.text();
+            throw new Error(JSON.parse(responseText)?.message || 'Unable to like a blog post');
         }
 
         return response.json();
     } catch (error) {
         throw Error(error.message);
     }
-}
+};
 
 const removeBlogPost = async (token, blogId) => {
     try {
         const requestHeaders = new Headers({
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
-          });
+        });
 
         const requestOptions = {
             method: 'DELETE',
@@ -102,28 +102,27 @@ const removeBlogPost = async (token, blogId) => {
             cache: 'no-cache',
             credentials: 'same-origin',
             headers: requestHeaders
-          }
-    
-        const request = await fetch( `${baseUrl}/${blogId}`,requestOptions);
+        };
+
+        const request = await fetch(`${baseUrl}/${blogId}`, requestOptions);
         const response = await request;
 
         if (!response.ok) {
             const responseText = await response.text();
             throw new Error(JSON.parse(responseText)?.message || 'Unable to remove a blog post');
-      }
+        }
 
-      return response.json();
+        return response.json();
     } catch (error) {
         throw Error(error.message);
     }
-}
-
+};
 
 const blogsApi = {
     getAll,
     createBlog,
     likeBlogPost,
     removeBlogPost
-}
+};
 
 export default blogsApi;

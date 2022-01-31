@@ -1,18 +1,18 @@
-import BlogListItem from "./BlogListItem";
+import BlogListItem from './BlogListItem';
 
-const BlogList = ({blogs, onLikeBlogPost, onRemoveBlogPost}) => {
+const BlogList = ({ blogs, onLikeBlogPost, onRemoveBlogPost }) => {
 
     const orderByMostLiked = (blogs) => {
-        return blogs.sort((firstItem, secondItem) => firstItem.likes - secondItem.likes).reverse()
-      }
+        return blogs.sort((firstItem, secondItem) => firstItem.likes - secondItem.likes).reverse();
+    };
 
     return (
         <div>
             {orderByMostLiked(blogs).map(blog =>
-                <BlogListItem key={blog.id} blog={blog} onLikeBlogPost={onLikeBlogPost} onRemoveBlogPost={onRemoveBlogPost}></BlogListItem>
+                <BlogListItem key={blog.id} blog={blog} onLikeBlogPost={onLikeBlogPost} onRemoveBlogPost={onRemoveBlogPost} />
             )}
         </div>
-    )
-}
+    );
+};
 
 export default BlogList;

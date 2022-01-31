@@ -54,5 +54,26 @@ describe('blog unit test',() => {
         expect(blogDetailsDiv).toHaveTextContent(`${blog.url}`);
     });
 
+    test('blog double like test', async () => {
+
+        const blog = {
+            url: 'test-blog-post',
+            title: 'Test blog post',
+            author: 'Matti meikäläinen',
+            likes: 0
+        };
+
+        const mockHandler = jest.fn();
+
+        const component = render(<Blog blog={blog} onLikeBlogPost={mockHandler} onRemoveBlogPost={() => {}} />);        
+        const likeButton = component.getByText('Like 👍');
+        fireEvent.click(likeButton);
+        fireEvent.click(likeButton);
+
+        // Note, the way likes are handled by usestate. toHaveLength needs to be called times + 1;
+        expect(mockHandler.mock.calls).toHaveLength(3);
+
+    });
+
 });
 

@@ -1,9 +1,14 @@
 import BlogListItem from "./BlogListItem";
 
 const BlogList = ({blogs, onLikeBlogPost}) => {
+
+    const orderByMostLiked = (blogs) => {
+        return blogs.sort((firstItem, secondItem) => firstItem.likes - secondItem.likes).reverse()
+      }
+
     return (
         <div>
-            {blogs.map(blog =>
+            {orderByMostLiked(blogs).map(blog =>
                 <BlogListItem key={blog.id} blog={blog} onLikeBlogPost={onLikeBlogPost}></BlogListItem>
             )}
         </div>

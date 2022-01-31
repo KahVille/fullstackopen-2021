@@ -49,6 +49,7 @@ const Blog = ({ blog, onLikeBlogPost, onRemoveBlogPost }) => {
 
             <div className="blog-view-list" style={showInList}>
                 <p>{blog.title}</p>
+                <p>{blog.author}</p>
                 <button onClick={() => toggleShowBlogDetails()}>View details</button>
             </div>
 

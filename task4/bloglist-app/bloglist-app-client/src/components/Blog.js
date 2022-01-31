@@ -45,14 +45,14 @@ const Blog = ({ blog, onLikeBlogPost, onRemoveBlogPost }) => {
     }, [blogLikes]);
 
     return (
-        <div style={blogStyle}>
+        <div style={blogStyle} className='blog'>
 
-            <div className="blog" style={showInList}>
+            <div className="blog-view-list" style={showInList}>
                 <p>{blog.title}</p>
                 <button onClick={() => toggleShowBlogDetails()}>View details</button>
             </div>
 
-            <div className="blog" style={showInDetail}>
+            <div className="blog-view-details" style={showInDetail}>
                 <p>{blog.title}</p>
                 <button onClick={() => toggleShowBlogDetails()}>hide details</button>
                 <p>{blog.url}</p>

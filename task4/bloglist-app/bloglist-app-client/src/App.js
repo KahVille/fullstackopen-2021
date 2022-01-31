@@ -10,7 +10,24 @@ const App = () => {
 
   const createBlogFormRef = useRef();
 
-  const handleLikeBlogPost = async(blogData, blogId) => {
+  const handleRemoveBlogPost = async (id) => {
+    try {
+      const removedBlog = await blogsApi.removeBlogPost(user.token, id);
+      
+      if(!removedBlog)
+      {
+        return;
+      }
+
+      const response = await blogsApi.getAll(user.token);
+      setBlogs(response);
+      setSuccessMessage('Blogs fetched');
+    } catch (error) {
+      setErrorMessage(error.message);      
+    }
+  }
+
+  const handleLikeBlogPost = async (blogData, blogId) => {
       try {
 
         const likedPost = await blogsApi.likeBlogPost(user.token, blogData, blogId);
@@ -136,6 +153,7 @@ const [password, setPassword] = useState('');
           handleCreateBlog = {(blogData) => handleCreateBlog(blogData)}
           createBlogFormRef={createBlogFormRef}
           onLikeBlogPost={handleLikeBlogPost}
+          onRemoveBlogPost={handleRemoveBlogPost}
       />}
 
     </div>

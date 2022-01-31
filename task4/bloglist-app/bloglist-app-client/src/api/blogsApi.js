@@ -89,10 +89,41 @@ const likeBlogPost = async (token, blogData, blogId) => {
     }
 }
 
+const removeBlogPost = async (token, blogId) => {
+    try {
+        const requestHeaders = new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          });
+
+        const requestOptions = {
+            method: 'DELETE',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: requestHeaders
+          }
+    
+        const request = await fetch( `${baseUrl}/${blogId}`,requestOptions);
+        const response = await request;
+
+        if (!response.ok) {
+            const responseText = await response.text();
+            throw new Error(JSON.parse(responseText)?.message || 'Unable to remove a blog post');
+      }
+
+      return response.json();
+    } catch (error) {
+        throw Error(error.message);
+    }
+}
+
+
 const blogsApi = {
     getAll,
     createBlog,
-    likeBlogPost
+    likeBlogPost,
+    removeBlogPost
 }
 
 export default blogsApi;

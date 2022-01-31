@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const Blog = ({blog, onLikeBlogPost}) => {
+const Blog = ({blog, onLikeBlogPost, onRemoveBlogPost}) => {
 
     const blogStyle = {
         padding: 10,
@@ -19,6 +19,8 @@ const Blog = ({blog, onLikeBlogPost}) => {
     const toggleShowBlogDetails = () => {
         setShowBlogDetails(!showBlogDetails);
     }
+
+    const removeBlogPost = (id) => onRemoveBlogPost(id);
 
     const likeBlogPost = () => {
         setBlogLikes(blogLikes + 1);
@@ -53,6 +55,7 @@ const Blog = ({blog, onLikeBlogPost}) => {
         <div>
         <p> likes: {blogLikes}</p>
         <button onClick={() => likeBlogPost()}>Like 👍</button>
+        <button onClick={() => removeBlogPost(blog?.id)}>Remove blog post</button>
         </div>
 
 

@@ -19,22 +19,17 @@ module.exports = {
         "react", "jest"
     ],
     "rules": {
-        "indent": [
-            "error",
-            2  
-        ],
+        "react/react-in-jsx-scope": 0,
+        "indent": ["error", 4],
         "linebreak-style": [
             "error",
-            "unix"
+            "windows"
         ],
         "quotes": [
             "error",
             "single"
         ],
-        "semi": [
-            "error",
-            "never"
-        ],
+        "semi": [2, "always"],
         "eqeqeq": "error",
         "no-trailing-spaces": "error",
         "object-curly-spacing": [

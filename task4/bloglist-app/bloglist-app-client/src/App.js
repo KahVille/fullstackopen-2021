@@ -144,6 +144,8 @@ const App = () => {
                 <Login handleSubmit={(event) => handleLogin(event)}
                     handleUsernameChange={({ target }) => setUsername(target.value)}
                     handlePasswordChange={({ target }) => setPassword(target.value)}
+                    username={username}
+                    password={password}
                 />
                 : <Blogs blogs={blogs} userDetails={user}
                     handleUserLogOut={() => handleLogOut()}

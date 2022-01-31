@@ -30,7 +30,7 @@ const Login = ({
     );
 };
 
-Login.PropTypes = {
+Login.propTypes = {
     handleSubmit: propTypes.func.isRequired,
     handleUsernameChange: propTypes.func.isRequired,
     handlePasswordChange: propTypes.func.isRequired,

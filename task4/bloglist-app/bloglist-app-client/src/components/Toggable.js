@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle, forwardRef } from 'react';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 
 const Toggable = forwardRef((props, ref) => {
     const [visible, setVisible] = useState(false);
@@ -33,8 +33,8 @@ const Toggable = forwardRef((props, ref) => {
 
 Toggable.displayName = 'Toggable';
 
-Toggable.PropTypes = {
-    buttonLabel: PropTypes.string.isRequired
+Toggable.propTypes = {
+    buttonLabel: propTypes.string.isRequired
 };
 
 export default Toggable;

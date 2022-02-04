@@ -1,4 +1,10 @@
 // End to end tests
+// TODO: Do the following end to end tests:
+//Blog creation test
+//Blog like test
+//blog deletion, only the blog that was created by an user can be deleted.
+//Order blogs by most likes
+
 describe('Bloglist app', () => {
     beforeEach(() => {
         cy.request('POST', 'http://localhost:3003/api/testing/reset')

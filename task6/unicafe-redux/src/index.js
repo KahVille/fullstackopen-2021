@@ -6,21 +6,30 @@ import reducer from './reducer';
 const store = createStore(reducer)
 
 const App = () => {
-  const good = () => {
-    store.dispatch({
-      type: 'GOOD'
-    });
-  };
+
+  const sendFeedBackAction = (actionType, payloadDescription) => {
+    const feedbackAction = {
+      type: actionType,
+      payload: payloadDescription
+    };
+    store.dispatch(feedbackAction);
+  }
+
+  const incrementFeedbackGood = () => sendFeedBackAction('GOOD','Increment good feedback');
+  const incrementFeedbackOk = () => sendFeedBackAction('OK','Increment ok feedback');
+  const incrementFeedbackBad = () => sendFeedBackAction('BAD','Increment bad feedback');
+  const resetFeedback = () => sendFeedBackAction('RESET','Reset feedback');
+
 
   return (
     <div>
-      <button onClick={() => good()}>good</button> 
-      <button>ok</button> 
-      <button>bad</button>
-      <button>reset stats</button>
+      <button onClick={() => incrementFeedbackGood()}>good</button> 
+      <button onClick={() => incrementFeedbackOk()}>ok</button> 
+      <button onClick={() => incrementFeedbackBad()}>bad</button>
+      <button onClick={() => resetFeedback()}>reset stats</button>
       <div>good {store.getState().good}</div>
-      <div>ok</div>
-      <div>bad</div>
+      <div>ok {store.getState().ok}</div>
+      <div>bad {store.getState().bad}</div>
     </div>
   )
 }

@@ -18,7 +18,10 @@ const feedbackReducer = (state = initialState, action) => {
             ok: state.ok + 1
         };
         case 'BAD':
-        return state
+        return {
+            ...state,
+            bad: state.bad + 1
+        };
         case 'ZERO':
         return state
         default: return state;

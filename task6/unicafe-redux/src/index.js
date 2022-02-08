@@ -9,12 +9,12 @@ const App = () => {
   const good = () => {
     store.dispatch({
       type: 'GOOD'
-    })
-  }
+    });
+  };
 
   return (
     <div>
-      <button onClick={good}>good</button> 
+      <button onClick={() => good()}>good</button> 
       <button>ok</button> 
       <button>bad</button>
       <button>reset stats</button>

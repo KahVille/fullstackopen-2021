@@ -43,5 +43,15 @@ const anecdotesAtStart = [
         }
       }
   }
+
+  export const addAnecdoteAction = (content) => {
+    return {
+      type: 'ADD_ANECDOTE',
+      payload: 'add new anecdote',
+      data: {
+          content: content
+      }
+    }
+}
   
   export default reducer;

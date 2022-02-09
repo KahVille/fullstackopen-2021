@@ -3,11 +3,11 @@ import anecdoteReducer, { voteAnecdoteAction } from './anecdoteReducer';
 
 describe('anecdote reducer', () => {
 
-    const initialState = [{
+    const initialState = {anecdotes: [{
         id: 0,
         content: 'test anecdote',
         votes: 0
-    }]
+    }]}
 
     test('anecdote voted success', () => {
         const action = {
@@ -21,13 +21,13 @@ describe('anecdote reducer', () => {
         const state = initialState;
         deepFreeze(state);
         const newState = anecdoteReducer(state,action);
-        expect(newState).toEqual([
+        expect(newState).toEqual({anecdotes:[
             {
                 id:0,
                 content: 'test anecdote',
                 votes: 1
             }
-        ]);
+        ]});
 
     });
 

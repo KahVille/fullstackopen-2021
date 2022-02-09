@@ -43,5 +43,32 @@ describe('anecdote reducer', () => {
             });
     });
 
+    test('Add new anecdote success', () => {
+            const action = {
+            type: 'ADD_ANECDOTE',
+            payload: 'add new anecdote',
+            data: {
+                content: 'test new anecdote'
+            }
+        }
+
+        const state = initialState;
+        deepFreeze(state);
+        const newState = anecdoteReducer(state,action);
+        expect(newState).toEqual({anecdotes:[
+            {
+                id:0,
+                content: 'test anecdote',
+                votes: 0
+            },
+            {
+                id: 1,
+                votes:0,
+                content: 'test new anecdote'
+            }
+        ]});
+
+    });
+
 
 });

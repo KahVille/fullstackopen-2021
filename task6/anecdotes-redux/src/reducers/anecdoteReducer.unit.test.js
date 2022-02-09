@@ -1,5 +1,5 @@
 import deepFreeze from 'deep-lock';
-import anecdoteReducer from './anecdoteReducer';
+import anecdoteReducer, { voteAnecdoteAction } from './anecdoteReducer';
 
 describe('anecdote reducer', () => {
 
@@ -11,15 +11,16 @@ describe('anecdote reducer', () => {
 
     test('anecdote voted success', () => {
         const action = {
-            type: 'VOTE_ANECDOTE'
+            type: 'VOTE_ANECDOTE',
+            payload: 'vote an anecdote once',
+            data: {
+                id: 0
+            }
         }
 
         const state = initialState;
-
         deepFreeze(state);
-
         const newState = anecdoteReducer(state,action);
-
         expect(newState).toEqual([
             {
                 id:0,
@@ -29,5 +30,18 @@ describe('anecdote reducer', () => {
         ]);
 
     });
+
+    test('voteAction object success', () => {
+        const action = voteAnecdoteAction(0);
+
+        expect(action).toEqual({
+                type: 'VOTE_ANECDOTE',
+                payload: 'vote an anecdote once',
+                data: {
+                    id: expect.any(Number)
+                }
+            });
+    });
+
 
 });

@@ -15,10 +15,14 @@ const App = () => {
     dispatch(addAnecdoteAction(content));
   };
 
+  const orderByDescendingVotes = (anecdotes) => {
+    return anecdotes.sort((firstItem, secondItem) => firstItem.votes - secondItem.votes).reverse();
+};
+
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote =>
+      {orderByDescendingVotes(anecdotes).map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}

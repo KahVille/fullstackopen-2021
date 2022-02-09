@@ -62,7 +62,7 @@ describe('anecdote reducer', () => {
                 votes: 0
             },
             {
-                id: 1,
+                id: expect.any(String),
                 votes:0,
                 content: 'test new anecdote'
             }

@@ -24,6 +24,11 @@ const anecdotesAtStart = [
     switch (action.type) {
       case 'VOTE_ANECDOTE':
         return{...state, anecdotes: state.anecdotes.map((anecdote) => anecdote.id === action.data.id ? {...anecdote, votes: anecdote.votes +1 } : anecdote)};
+      case 'ADD_ANECDOTE':
+        return {
+          ...state,
+          anecdotes: [...state.anecdotes, asObject(action.data.content)]
+        }
       default:
         return state;
     };

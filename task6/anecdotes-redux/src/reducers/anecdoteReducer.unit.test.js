@@ -104,7 +104,10 @@ describe('anecdote reducer', () => {
     });
 
     test('init anecdotes action object test', () => {
-        const action = initAnecdotesAction();
+
+        const initialState = [];
+
+        const action = initAnecdotesAction(initialState);
         
         expect(action).toEqual({
             type: 'INIT_ANECDOTES',

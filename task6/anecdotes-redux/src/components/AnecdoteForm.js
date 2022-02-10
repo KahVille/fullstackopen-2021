@@ -1,4 +1,5 @@
 import { useDispatch } from 'react-redux';
+import anecdoteApi from '../api/anecdoteApi';
 import { addAnecdoteAction } from '../reducers/anecdoteReducer';
 import { addNotificationAction, clearNotificationAction } from '../reducers/notificationReducer';
 
@@ -6,10 +7,18 @@ const AnecdoteForm = () => {
 
     const dispatch = useDispatch();
 
-    const addAnecdote = (event) => {
+    const addAnecdote = async (event) => {
         event.preventDefault();
         const content = event.target.anecdote.value;
-        dispatch(addAnecdoteAction(content));
+
+        const anecdoteData = {
+            content: content,
+            votes: 0
+        };
+
+        const newAnecdote = await anecdoteApi.createNew(anecdoteData);
+
+        dispatch(addAnecdoteAction(newAnecdote));
         dispatch(addNotificationAction(`Anecdote ${content} added`));
         setTimeout(() => {
           dispatch(clearNotificationAction())

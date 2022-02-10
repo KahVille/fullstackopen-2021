@@ -19,7 +19,37 @@ const getAll = async () => {
 
         if (!response.ok) {
             const responseText = await response.text();
-            throw new Error(JSON.parse(responseText)?.message || 'Unable to get any blogs');
+            throw new Error(JSON.parse(responseText)?.message || 'Unable to get any anecdotes');
+        }
+
+        return response.json();
+    } catch (error) {
+        throw Error(error.message);
+    }
+};
+
+const createNew = async (anecdoteData) => {
+    try {
+        console.log(anecdoteData);
+        const requestHeaders = new Headers({
+            'Content-Type': 'application/json'
+        });
+
+        const requestOptions = {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: requestHeaders,
+            body: JSON.stringify(anecdoteData)
+        };
+
+        const request = await fetch(baseUrl, requestOptions);
+        const response = await request;
+
+        if (!response.ok) {
+            const responseText = await response.text();
+            throw new Error(JSON.parse(responseText)?.message || 'Unable to create new anecdote');
         }
 
         return response.json();
@@ -29,7 +59,8 @@ const getAll = async () => {
 };
 
 const anecdoteApi = {
-    getAll
+    getAll,
+    createNew
 };
 
 export default anecdoteApi;

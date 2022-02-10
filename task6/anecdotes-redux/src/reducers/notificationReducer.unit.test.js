@@ -1,5 +1,5 @@
 import deepFreeze from 'deep-lock';
-import notificationReducer, { addNotification } from './notificationReducer';
+import notificationReducer, { addNotificationAction } from './notificationReducer';
 
 describe('notification reducer', () => {
 
@@ -9,9 +9,7 @@ describe('notification reducer', () => {
         const action = {
             type: 'ADD_NOTIFICATION',
             payload: 'add new notification',
-            data: {
-                message: 'Test message'
-            }
+            message: 'Test message'
         }
 
         const state = initialState;
@@ -26,9 +24,7 @@ describe('notification reducer', () => {
         expect(action).toEqual({
             type: 'ADD_NOTIFICATION',
             payload: 'add new notification',
-            data: {
-                message: expect.any(String)
-            }
+            message: expect.any(String)
         });
     });
 });

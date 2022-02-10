@@ -1,5 +1,5 @@
 import deepFreeze from 'deep-lock';
-import notificationReducer, { addNotificationAction } from './notificationReducer';
+import notificationReducer, { addNotificationAction, clearNotificationAction } from './notificationReducer';
 
 describe('notification reducer', () => {
 
@@ -18,6 +18,19 @@ describe('notification reducer', () => {
         expect(newState).toEqual({notification: 'Test message'});
     });
 
+    test('clear notification success', () => {
+        const action = {
+            type: 'CLEAR_NOTIFICATION',
+            payload: 'clear notification',
+            message: ''
+        }
+
+        const state = initialState;
+        deepFreeze(state);
+        const newState = notificationReducer(state,action);
+        expect(newState).toEqual({notification: ''});
+    });
+
     test('addNotification object success', () => {
         const action = addNotificationAction('Test message');
 
@@ -27,4 +40,15 @@ describe('notification reducer', () => {
             message: expect.any(String)
         });
     });
+
+    test('clear notification action object success', () => {
+        const action = clearNotificationAction();
+
+        expect(action).toEqual({
+            type: 'CLEAR_NOTIFICATION',
+            payload: 'clear notification',
+            message: ''
+        });
+    });
+
 });

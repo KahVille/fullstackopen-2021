@@ -5,7 +5,7 @@ describe('anecdote reducer', () => {
 
     test('anecdote voted success', () => {
         const initialState = {anecdotes: [{
-            id: 0,
+            id: "0",
             content: 'test anecdote',
             votes: 0
         }]}
@@ -13,7 +13,7 @@ describe('anecdote reducer', () => {
             type: 'VOTE_ANECDOTE',
             payload: 'vote an anecdote once',
             data: {
-                id: 0
+                id: "0"
             }
         }
 
@@ -22,7 +22,7 @@ describe('anecdote reducer', () => {
         const newState = anecdoteReducer(state,action);
         expect(newState).toEqual({anecdotes:[
             {
-                id:0,
+                id: "0",
                 content: 'test anecdote',
                 votes: 1
             }
@@ -44,7 +44,7 @@ describe('anecdote reducer', () => {
 
     test('Add new anecdote success', () => {
         const initialState = {anecdotes: [{
-            id: 0,
+            id: "0",
             content: 'test anecdote',
             votes: 0
         }]};
@@ -52,7 +52,7 @@ describe('anecdote reducer', () => {
             type: 'ADD_ANECDOTE',
             payload: 'add new anecdote',
             anecdote: {
-                id: 1,
+                id: "1",
                 content: 'test new anecdote',
                 votes: 0
             }
@@ -63,7 +63,7 @@ describe('anecdote reducer', () => {
         const newState = anecdoteReducer(state,action);
         expect(newState).toEqual({anecdotes:[
             {
-                id:0,
+                id: "0",
                 content: 'test anecdote',
                 votes: 0
             },
@@ -77,7 +77,12 @@ describe('anecdote reducer', () => {
     });
 
     test('addAction object success', () => {
-        const action = addAnecdoteAction('test new anecdote');
+        const anecdote = {
+            id: "1",
+            content: 'test new anecdote',
+            votes: 0
+        }
+        const action = addAnecdoteAction(anecdote);
 
         expect(action).toEqual({
                 type: 'ADD_ANECDOTE',

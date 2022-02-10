@@ -3,7 +3,7 @@ import { voteAnecdoteAction } from '../reducers/anecdoteReducer';
 
 const AnecdoteList = () => {
 
-    const anecdotes = useSelector(state => state.anecdotes);
+    const anecdotes = useSelector(state => state.anecdotes.anecdotes);
     const dispatch = useDispatch();
   
     const vote = (id) => dispatch(voteAnecdoteAction(id));

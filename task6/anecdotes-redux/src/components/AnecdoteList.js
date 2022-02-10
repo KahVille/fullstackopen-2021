@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { voteAnecdoteAction } from '../reducers/anecdoteReducer';
+import anecdoteApi from '../api/anecdoteApi';
+import { voteAnecdoteAction, initAnecdotesAction } from '../reducers/anecdoteReducer';
 import { addNotificationAction, clearNotificationAction } from '../reducers/notificationReducer';
 import Filter from './Filter';
 
@@ -7,9 +9,22 @@ const AnecdoteList = () => {
 
     const anecdotes = useSelector(state => state.anecdotes.anecdotes);
     const filter = useSelector(state => state.filter.filter);
-      
+
     const dispatch = useDispatch();
   
+    //Init anecdotes from the server
+    useEffect(()=> {
+        const getAllAnecdotes = async () => {
+          try {
+            const anecdotes = await anecdoteApi.getAll();
+            return dispatch(initAnecdotesAction(anecdotes));
+          } catch (error) {
+            return dispatch(addNotificationAction(error.message));
+          }
+        }
+        getAllAnecdotes();
+    }, [dispatch])
+
     const vote = (anecdote) => {
       dispatch(voteAnecdoteAction(anecdote.id));
       dispatch(addNotificationAction(`Anecdote ${anecdote.content} voted`));
@@ -19,7 +34,13 @@ const AnecdoteList = () => {
     };
   
     const orderByDescendingVotes = (anecdotes) => anecdotes.sort((firstItem, secondItem) => firstItem.votes - secondItem.votes).reverse();
-    const filterAnecdotes = (anecdotes) => anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter)); 
+    const filterAnecdotes = (anecdotes) => {
+
+      if(!anecdotes || anecdotes.length < 1)
+        return [];
+
+      return anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter));
+    }  
 
     return (
         <div>

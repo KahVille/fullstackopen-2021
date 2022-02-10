@@ -1,14 +1,4 @@
-  const getId = () => (100000 * Math.random()).toFixed(0);
-  
-  const asObject = (anecdote) => {
-    return {
-      content: anecdote,
-      id: getId(),
-      votes: 0
-    }
-  };
-  
-const initialState = { anecdotes: [] };
+  const initialState = { anecdotes: [] };
 
   const anecdoteReducer = (state = initialState, action) => {
 
@@ -18,7 +8,7 @@ const initialState = { anecdotes: [] };
       case 'ADD_ANECDOTE':
         return {
           ...state,
-          anecdotes: [...state.anecdotes, asObject(action.data.content)]
+          anecdotes: [...state.anecdotes, action.anecdote]
         };
         case 'INIT_ANECDOTES':
         return {
@@ -40,13 +30,11 @@ const initialState = { anecdotes: [] };
       }
   }
 
-  export const addAnecdoteAction = (content) => {
+  export const addAnecdoteAction = (anecdote) => {
     return {
       type: 'ADD_ANECDOTE',
       payload: 'add new anecdote',
-      data: {
-          content: content
-      }
+      anecdote: anecdote
     }
   }
 

@@ -51,8 +51,10 @@ describe('anecdote reducer', () => {
         const action = {
             type: 'ADD_ANECDOTE',
             payload: 'add new anecdote',
-            data: {
-                content: 'test new anecdote'
+            anecdote: {
+                id: 1,
+                content: 'test new anecdote',
+                votes: 0
             }
         };
 
@@ -80,8 +82,10 @@ describe('anecdote reducer', () => {
         expect(action).toEqual({
                 type: 'ADD_ANECDOTE',
                 payload: 'add new anecdote',
-                data: {
-                    content: expect.any(String)
+                anecdote: {
+                    id: expect.any(String),
+                    content: expect.any(String),
+                    votes: expect.any(Number)
                 }
             });
     });

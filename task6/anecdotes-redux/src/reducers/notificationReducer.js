@@ -6,7 +6,11 @@ const notificationReducer = (state = initialState, action) => {
         case 'ADD_NOTIFICATION':
             return {
                 notification: action.message
-            };  
+            };
+        case 'CLEAR_NOTIFICATION':
+            return {
+                notification: action.message
+            }
         default:
             return state;
     }
@@ -20,5 +24,12 @@ export const addNotificationAction = (message) => {
     }
 }
 
+export const clearNotificationAction = () => {
+    return {
+        type: 'CLEAR_NOTIFICATION',
+        payload: 'clear notification',
+        message: ''
+    }
+}
 
 export default notificationReducer;

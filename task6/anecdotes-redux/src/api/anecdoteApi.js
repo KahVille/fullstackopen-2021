@@ -30,7 +30,6 @@ const getAll = async () => {
 
 const createNew = async (anecdoteData) => {
     try {
-        console.log(anecdoteData);
         const requestHeaders = new Headers({
             'Content-Type': 'application/json'
         });

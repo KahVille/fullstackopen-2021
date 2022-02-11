@@ -38,7 +38,7 @@ describe('anecdote reducer', () => {
         const anecdote = {
             id: "0",
             content: 'test updated vote count',
-            votes: 0
+            votes: 2
         }
 
         const votedAnecdote = {
@@ -54,7 +54,7 @@ describe('anecdote reducer', () => {
                 anecdote: {
                     id: expect.any(String),
                     content: expect.any(String),
-                    votes: expect.any(Number)
+                    votes: 3
                 }
             });
     });

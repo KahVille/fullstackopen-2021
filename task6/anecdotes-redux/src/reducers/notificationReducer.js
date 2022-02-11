@@ -1,3 +1,4 @@
+import { addNotificationAction, clearNotificationAction } from "./notificationReducerActions";
 const initialState = {notification: 'App started'};
 
 const notificationReducer = (state = initialState, action) => { 
@@ -16,19 +17,18 @@ const notificationReducer = (state = initialState, action) => {
     }
 };
 
-export const addNotificationAction = (message) => {
-    return {
-        type: 'ADD_NOTIFICATION',
-        payload: 'add new notification',
-        message: message
-    }
+export const setNotification = (message, diaplayTime) => {
+    return async dispatch => {
+        dispatch(addNotificationAction(message))
+        setTimeout(() => {
+        dispatch(clearNotificationAction())
+        }, diaplayTime)
+      }
 }
 
-export const clearNotificationAction = () => {
-    return {
-        type: 'CLEAR_NOTIFICATION',
-        payload: 'clear notification',
-        message: ''
+export const clearNotification = () => {
+    return async dispatch => {
+        dispatch(clearNotificationAction());
     }
 }
 

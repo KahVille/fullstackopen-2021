@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { voteAnecdote, initAnecdotes } from '../reducers/anecdoteReducer';
-import { addNotificationAction, clearNotificationAction } from '../reducers/notificationReducer';
+import { setNotification } from '../reducers/notificationReducer';
 import Filter from './Filter';
 
 const AnecdoteList = () => {
@@ -17,7 +17,7 @@ const AnecdoteList = () => {
           try {
             return dispatch(initAnecdotes());
           } catch (error) {
-            return dispatch(addNotificationAction(error.message));
+            return dispatch(setNotification(error.message, 5000));
           }
         }
         getAllAnecdotes();
@@ -31,10 +31,7 @@ const AnecdoteList = () => {
       };
 
       dispatch(voteAnecdote(updatedAnecdote.id, updatedAnecdote));
-      dispatch(addNotificationAction(`Anecdote ${updatedAnecdote.content} voted`));
-      setTimeout(() => {
-        dispatch(clearNotificationAction())
-      }, 5000);
+      dispatch(setNotification(`Anecdote ${updatedAnecdote.content} voted`, 5000));
     };
   
     const orderByDescendingVotes = (anecdotes) => anecdotes.sort((firstItem, secondItem) => firstItem.votes - secondItem.votes).reverse();

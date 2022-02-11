@@ -72,7 +72,7 @@ const updateAnecdote = async (anecdoteId, updatedAnecdoteData) => {
             body: JSON.stringify(updatedAnecdoteData)
         };
 
-        const request = await fetch(`${baseApiUrl}/${anecdoteId}`, requestOptions);
+        const request = await fetch(`${baseUrl}/${anecdoteId}`, requestOptions);
         const response = await request;
 
         if (!response.ok) {

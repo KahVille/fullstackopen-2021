@@ -17,13 +17,18 @@ const notificationReducer = (state = initialState, action) => {
     }
 };
 
-export const setNotification = (message, diaplayTime) => {
+export const setNotification = (message, displayTime) => {
     return async dispatch => {
-        dispatch(addNotificationAction(message))
-        setTimeout(() => {
-        dispatch(clearNotificationAction())
-        }, diaplayTime)
-      }
+
+        const timerPromise = new Promise((resolve, reject) => {
+            dispatch(addNotificationAction(message));
+            setTimeout(() => {
+                resolve()
+            }, displayTime);
+        });
+        
+        timerPromise.then(() => dispatch(clearNotificationAction()))
+    }
 }
 
 export const clearNotification = () => {

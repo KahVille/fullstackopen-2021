@@ -13,8 +13,10 @@ describe('anecdote reducer', () => {
         const action = {
             type: 'VOTE_ANECDOTE',
             payload: 'vote an anecdote once',
-            data: {
-                id: "0"
+            anecdote: {
+                id: "0",
+                content: 'test anecdote',
+                votes: 1
             }
         }
 
@@ -32,13 +34,27 @@ describe('anecdote reducer', () => {
     });
 
     test('voteAction object success', () => {
-        const action = anecdoteReducerActions.voteAnecdoteAction(0);
+
+        const anecdote = {
+            id: "0",
+            content: 'test updated vote count',
+            votes: 0
+        }
+
+        const votedAnecdote = {
+            ...anecdote,
+            votes: anecdote.votes + 1
+        }
+
+        const action = anecdoteReducerActions.voteAnecdoteAction(votedAnecdote);
 
         expect(action).toEqual({
                 type: 'VOTE_ANECDOTE',
                 payload: 'vote an anecdote once',
-                data: {
-                    id: expect.any(Number)
+                anecdote: {
+                    id: expect.any(String),
+                    content: expect.any(String),
+                    votes: expect.any(Number)
                 }
             });
     });

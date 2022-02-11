@@ -1,5 +1,7 @@
 import deepFreeze from 'deep-lock';
-import notificationReducer, { addNotificationAction, clearNotificationAction } from './notificationReducer';
+
+import notificationReducer from './notificationReducer';
+import { addNotificationAction, clearNotificationAction } from './notificationReducerActions';
 
 describe('notification reducer', () => {
 

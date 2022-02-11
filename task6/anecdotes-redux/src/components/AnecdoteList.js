@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import anecdoteApi from '../api/anecdoteApi';
-import { voteAnecdoteAction, initAnecdotesAction } from '../reducers/anecdoteReducer';
+import { voteAnecdote, initAnecdotes } from '../reducers/anecdoteReducer';
 import { addNotificationAction, clearNotificationAction } from '../reducers/notificationReducer';
 import Filter from './Filter';
 
@@ -16,8 +15,7 @@ const AnecdoteList = () => {
     useEffect(()=> {
         const getAllAnecdotes = async () => {
           try {
-            const anecdotes = await anecdoteApi.getAll();
-            return dispatch(initAnecdotesAction(anecdotes));
+            return dispatch(initAnecdotes());
           } catch (error) {
             return dispatch(addNotificationAction(error.message));
           }
@@ -26,7 +24,7 @@ const AnecdoteList = () => {
     }, [dispatch])
 
     const vote = (anecdote) => {
-      dispatch(voteAnecdoteAction(anecdote.id));
+      dispatch(voteAnecdote(anecdote.id));
       dispatch(addNotificationAction(`Anecdote ${anecdote.content} voted`));
       setTimeout(() => {
         dispatch(clearNotificationAction())

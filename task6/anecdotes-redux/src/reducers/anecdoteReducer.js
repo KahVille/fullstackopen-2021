@@ -1,3 +1,6 @@
+import anecdoteApi from "../api/anecdoteApi";
+import anecdoteReducerActions from "./anecdoteReducerActions";
+
   const initialState = { anecdotes: [] };
 
   const anecdoteReducer = (state = initialState, action) => {
@@ -20,31 +23,23 @@
     };
   };
   
-  export const voteAnecdoteAction = (anecdoteId) => {
-      return {
-        type: 'VOTE_ANECDOTE',
-        payload: 'vote an anecdote once',
-        data: {
-            id: anecdoteId
-        }
-      }
+  export const voteAnecdote = (anecdoteId) => {
+    return anecdoteReducerActions.voteAnecdoteAction(anecdoteId);
   }
 
-  export const addAnecdoteAction = (anecdote) => {
-    return {
-      type: 'ADD_ANECDOTE',
-      payload: 'add new anecdote',
-      anecdote: anecdote
+  export const addAnecdote = (anecdoteData) => {
+    return async dispatch => {
+      const anecdote = await anecdoteApi.createNew(anecdoteData);
+      return dispatch(anecdoteReducerActions.addAnecdoteAction(anecdote));
     }
-  }
+  };
 
-  export const initAnecdotesAction = (anecdotes) => {
-    return {
-      type: 'INIT_ANECDOTES',
-      payload: 'init anecdotes from the server',
-      anecdotes: anecdotes
+  export const initAnecdotes = () => {
+    return async dispatch => {
+      const anecdotes = await anecdoteApi.getAll();
+      return dispatch(anecdoteReducerActions.initAnecdotesAction(anecdotes));
     }
-  }
+  };
 
   
 export default anecdoteReducer;

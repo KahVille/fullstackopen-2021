@@ -7,7 +7,7 @@ import anecdoteReducerActions from "./anecdoteReducerActions";
 
     switch (action.type) {
       case 'VOTE_ANECDOTE':
-        return{...state, anecdotes: state.anecdotes.map((anecdote) => anecdote.id === action.data.id ? {...anecdote, votes: anecdote.votes +1 } : anecdote)};
+        return{...state, anecdotes: state.anecdotes.map((anecdote) => anecdote.id === action.anecdote.id ? {...anecdote, votes: action.anecdote.votes} : anecdote)};
       case 'ADD_ANECDOTE':
         return {
           ...state,
@@ -23,8 +23,11 @@ import anecdoteReducerActions from "./anecdoteReducerActions";
     };
   };
   
-  export const voteAnecdote = (anecdoteId) => {
-    return anecdoteReducerActions.voteAnecdoteAction(anecdoteId);
+  export const voteAnecdote = (anecdoteId, updatedAnecdoteData) => {
+    return async dispatch => {
+      const anecdote = await anecdoteApi.updateAnecdote(anecdoteId, updatedAnecdoteData);
+      return dispatch(anecdoteReducerActions.voteAnecdoteAction(updatedAnecdoteData));
+    }
   }
 
   export const addAnecdote = (anecdoteData) => {
@@ -40,6 +43,5 @@ import anecdoteReducerActions from "./anecdoteReducerActions";
       return dispatch(anecdoteReducerActions.initAnecdotesAction(anecdotes));
     }
   };
-
   
 export default anecdoteReducer;

@@ -15,13 +15,11 @@ const addAnecdoteAction = (anecdote) => {
     }
 }
 
-const voteAnecdoteAction = (anecdoteId) => {
+const voteAnecdoteAction = (anecdote) => {
     return {
       type: 'VOTE_ANECDOTE',
       payload: 'vote an anecdote once',
-      data: {
-          id: anecdoteId
-      }
+      anecdote: anecdote
     }
 }
 
